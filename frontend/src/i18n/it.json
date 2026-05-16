@@ -1,0 +1,11 @@
+{
+  "app": {
+    "name": "FantaMeister",
+    "competitionLabel": "Competizione"
+  },
+  "leagueModes": {
+    "classic": "Classifica punti totali",
+    "formula_one": "Punti per piazzamento giornata",
+    "head_to_head": "Scontri diretti"
+  }
+}

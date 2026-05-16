@@ -1,0 +1,11 @@
+{
+  "app": {
+    "name": "FantaMeister",
+    "competitionLabel": "Competition"
+  },
+  "leagueModes": {
+    "classic": "Total fantasy points standings",
+    "formula_one": "Points by matchday placement",
+    "head_to_head": "Head-to-head"
+  }
+}
