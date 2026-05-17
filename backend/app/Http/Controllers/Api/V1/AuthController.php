@@ -8,57 +8,56 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Http\Resources\Auth\UserResource;
-use App\Models\Role;
+use App\Services\Auth\LoginUserService;
+use App\Services\Auth\LogoutUserService;
+use App\Services\Auth\RegisterUserService;
 use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
+    public function __construct(
+        private readonly RegisterUserService $registerUserService,
+        private readonly LoginUserService $loginUserService,
+        private readonly LogoutUserService $logoutUserService,
+    ) {
+    }
+
     public function register(RegisterRequest $request): JsonResponse
     {
-        $validated = $request->validated();
-
-        $user = User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
-        ]);
-
-        $userRole = Role::firstWhere('name', 'user');
-        if ($userRole) {
-            $user->roles()->syncWithoutDetaching([$userRole->id]);
-        }
-
-        $token = $user->createToken('auth-token')->plainTextToken;
+        $result = $this->registerUserService->execute($request->validated());
 
         return response()->json([
-            'token' => $token,
-            'user' => new UserResource($user->load('roles')),
+            'token' => $result['token'],
+            'user' => new UserResource($result['user']),
         ], 201);
     }
 
     public function login(LoginRequest $request): JsonResponse
     {
-        $user = User::where('email', $request->string('email'))->first();
-        if (! $user || ! Hash::check($request->string('password'), $user->password)) {
+        try {
+            $result = $this->loginUserService->execute(
+                $request->string('email')->toString(),
+                $request->string('password')->toString(),
+            );
+        } catch (ValidationException) {
             return response()->json(['message' => 'Invalid credentials.'], 422);
         }
-        $token = $user->createToken('auth-token')->plainTextToken;
-        return response()->json(['token' => $token, 'user' => new UserResource($user->load('roles'))]);
+
+        return response()->json([
+            'token' => $result['token'],
+            'user' => new UserResource($result['user']),
+        ]);
     }
 
     public function logout(Request $request): JsonResponse
     {
-        $user = $request->user();
-
-        if ($user && $user->currentAccessToken()) {
-            $user->currentAccessToken()->delete();
-        }
+        $this->logoutUserService->execute($request->user());
 
         return response()->json([
             'message' => 'Logged out.',

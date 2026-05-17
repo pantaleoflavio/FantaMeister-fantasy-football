@@ -8,6 +8,7 @@ import { authApi } from './lib/api'
 import { useAuth } from './features/auth/AuthProvider'
 import { ProtectedRoute } from './components/routing/ProtectedRoute'
 import { GuestRoute } from './components/routing/GuestRoute'
+import { t } from './i18n'
 
 function Nav() {
   const { user, logout } = useAuth()
@@ -27,13 +28,13 @@ function Nav() {
               nav('/login')
             }}
           >
-            Logout
+             {t('auth.logout')}
           </button>
         </>
       ) : (
         <>
-          <Link to="/login">Login</Link>{' '}
-          <Link to="/register">Register</Link>
+         <Link to="/login">{t('auth.login')}</Link>{' '}
+          <Link to="/register">{t('auth.register')}</Link>
         </>
       )}
     </nav>
@@ -48,9 +49,9 @@ function Home() {
 
   return (
     <div>
-      <h1>FantaMeister</h1>
+       <h1>{t('app.name')}</h1>
 
-      {q.isLoading && <p>Loading...</p>}
+      {q.isLoading && <p>{t('common.loading')}</p>}
 
       {q.data && (
         <p>
@@ -88,19 +89,19 @@ function Login() {
 
   return (
     <form onSubmit={handleSubmit((v) => m.mutate(v))}>
-      <h2>Login</h2>
+      <h2>{t('auth.login')}</h2>
 
-      <input placeholder="email" {...register('email')} />
+      <input placeholder={t('auth.email')} {...register('email')} />
       <p>{errors.email?.message}</p>
 
-      <input type="password" placeholder="password" {...register('password')} />
+      <input type="password" placeholder={t('auth.password')} {...register('password')} />
       <p>{errors.password?.message}</p>
 
-      <button>Login</button>
+      <button>{t('auth.login')}</button>
 
       <p>{m.error instanceof Error ? m.error.message : ''}</p>
 
-      <Link to="/forgot-password">Forgot password?</Link>
+      <Link to="/forgot-password">{t('auth.forgotPasswordLink')}</Link>
     </form>
   )
 }
@@ -118,7 +119,7 @@ function Register() {
     })
     .refine((v) => v.password === v.password_confirmation, {
       path: ['password_confirmation'],
-      message: 'Passwords must match',
+      message: t('auth.passwordsMustMatch'),
     })
 
   const f = useForm<z.infer<typeof schema>>({
@@ -135,20 +136,20 @@ function Register() {
 
   return (
     <form onSubmit={f.handleSubmit((v) => m.mutate(v))}>
-      <h2>Register</h2>
+      <h2>{t('auth.register')}</h2>
 
-      <input placeholder="name" {...f.register('name')} />
-      <input placeholder="email" {...f.register('email')} />
+      <input placeholder={t('auth.name')} {...f.register('name')} />
+      <input placeholder={t('auth.email')} {...f.register('email')} />
 
-      <input type="password" placeholder="password" {...f.register('password')} />
+      <input type="password" placeholder={t('auth.password')} {...f.register('password')} />
 
       <input
         type="password"
-        placeholder="confirm password"
+        placeholder={t('auth.confirmPassword')}
         {...f.register('password_confirmation')}
       />
 
-      <button>Register</button>
+      <button>{t('auth.register')}</button>
 
       <p>{m.error instanceof Error ? m.error.message : ''}</p>
     </form>
@@ -170,11 +171,11 @@ function ForgotPassword() {
 
   return (
     <form onSubmit={f.handleSubmit((v) => m.mutate(v))}>
-      <h2>Forgot password</h2>
+      <h2>{t('auth.forgotPassword')}</h2>
 
-      <input placeholder="email" {...f.register('email')} />
+      <input placeholder={t('auth.email')} {...f.register('email')} />
 
-      <button>Send reset link</button>
+      <button>{t('auth.sendResetLink')}</button>
 
       <p>{m.data?.message}</p>
     </form>
@@ -194,7 +195,7 @@ function ResetPassword() {
     })
     .refine((v) => v.password === v.password_confirmation, {
       path: ['password_confirmation'],
-      message: 'Passwords must match',
+      message: t('auth.passwordsMustMatch'),
     })
 
   const f = useForm<z.infer<typeof schema>>({
@@ -212,17 +213,17 @@ function ResetPassword() {
 
   return (
     <form onSubmit={f.handleSubmit((v) => m.mutate(v))}>
-      <h2>Reset password</h2>
+      <h2>{t('auth.resetPassword')}</h2>
 
-      <input type="password" placeholder="password" {...f.register('password')} />
+      <input type="password" placeholder={t('auth.password')} {...f.register('password')} />
 
       <input
         type="password"
-        placeholder="confirm password"
+        placeholder={t('auth.confirmPassword')}
         {...f.register('password_confirmation')}
       />
 
-      <button>Reset password</button>
+      <button>{t('auth.resetPassword')}</button>
 
       <p>{m.data?.message}</p>
     </form>
