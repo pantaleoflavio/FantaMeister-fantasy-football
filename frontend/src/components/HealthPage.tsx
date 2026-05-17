@@ -1,11 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
-import { fetchHealth } from '../lib/api'
+import { authApi } from '../lib/api'
 
 export function HealthPage() {
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: ['health'],
-    queryFn: fetchHealth,
-  })
+  const { data, isLoading, isError, error } = useQuery({ queryKey: ['health'], queryFn: authApi.health })
 
   return (
     <main className="min-h-screen bg-slate-100 p-8 text-slate-900">
