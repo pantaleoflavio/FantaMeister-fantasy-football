@@ -2,7 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\FantasyTeam;
 use App\Models\Formation;
+use App\Models\FormationModule;
+use App\Models\League;
+use App\Models\Matchday;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -10,15 +14,18 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class FormationFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+    protected $model = Formation::class;
+
     public function definition(): array
     {
         return [
-            //
+            'league_id' => League::factory(),
+            'fantasy_team_id' => FantasyTeam::factory(),
+            'matchday_id' => Matchday::factory(),
+            'formation_module_id' => FormationModule::query()->value('id'),
+            'is_confirmed' => false,
+            'is_auto_generated' => false,
+            'snapshot' => ['starters' => []],
         ];
     }
 }

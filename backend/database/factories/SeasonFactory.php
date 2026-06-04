@@ -2,23 +2,23 @@
 
 namespace Database\Factories;
 
-use App\Models\Model;
+use App\Models\Season;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Model>
+ * @extends Factory<Season>
  */
 class SeasonFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+    protected $model = Season::class;
+
     public function definition(): array
     {
         return [
-            //
+            'name' => $this->faker->unique()->year() . '/' . $this->faker->year(),
+            'starts_at' => now()->startOfYear(),
+            'ends_at' => now()->endOfYear(),
+            'is_active' => true,
         ];
     }
 }
