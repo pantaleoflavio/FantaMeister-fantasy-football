@@ -1,0 +1,29 @@
+{
+  "app": {
+    "name": "FantaMeister",
+    "competitionLabel": "Wettbewerb"
+  },
+  "leagueModes": {
+    "classic": "Gesamtpunkteliste",
+    "formula_one": "Punkte nach Spieltag",
+    "head_to_head": "Kopf-an-Kopf"
+  },
+  "auth": {
+    "login": "Anmelden",
+    "register": "Registrieren",
+    "logout": "Abmelden",
+    "forgotPassword": "Passwort vergessen",
+    "resetPassword": "Passwort zurücksetzen",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "confirmPassword": "Passwort bestätigen",
+    "name": "Name",
+    "sendResetLink": "Reset-Link senden",
+    "passwordsMustMatch": "Passwörter müssen übereinstimmen",
+    "forgotPasswordLink": "Passwort vergessen?",
+    "invalidCredentials": "Ungültige Anmeldedaten."
+  },
+  "common": {
+    "loading": "Wird geladen..."
+  }
+}
