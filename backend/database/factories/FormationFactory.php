@@ -22,7 +22,10 @@ class FormationFactory extends Factory
             'league_id' => League::factory(),
             'fantasy_team_id' => FantasyTeam::factory(),
             'matchday_id' => Matchday::factory(),
-            'formation_module_id' => FormationModule::query()->value('id'),
+            'formation_module_id' => FormationModule::query()->firstOrCreate(
+                ['name' => '4-3-3'],
+                ['label' => '4-3-3', 'is_active' => true],
+            )->id,
             'is_confirmed' => false,
             'is_auto_generated' => false,
             'snapshot' => ['starters' => []],

@@ -28,4 +28,14 @@ class RealClub extends Model
     {
         return $this->hasMany(Player::class);
     }
+
+    public function homeMatches(): HasMany
+    {
+        return $this->hasMany(RealMatch::class, 'home_club_id');
+    }
+
+    public function awayMatches(): HasMany
+    {
+        return $this->hasMany(RealMatch::class, 'away_club_id');
+    }
 }

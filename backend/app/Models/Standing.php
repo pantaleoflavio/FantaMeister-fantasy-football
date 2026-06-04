@@ -21,4 +21,9 @@ class Standing extends Model
     {
         return $this->belongsTo(League::class);
     }
+
+    public function fantasyTeam(): BelongsTo
+    {
+        return $this->belongsTo(FantasyTeam::class);
+    }
 }

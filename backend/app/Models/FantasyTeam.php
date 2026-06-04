@@ -2,10 +2,16 @@
 
 namespace App\Models;
 
+use App\Models\FantasyTeamPlayer;
+use App\Models\Formation;
+use App\Models\League;
+use App\Models\Player;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class FantasyTeam extends Model
 {
@@ -22,10 +28,10 @@ class FantasyTeam extends Model
     ];
 
     protected $casts =
-        [
-            'budget' => 'decimal:2',
-            'remaining_budget' => 'decimal:2',
-        ];
+    [
+        'budget' => 'decimal:2',
+        'remaining_budget' => 'decimal:2',
+    ];
 
     public function league(): BelongsTo
     {
@@ -45,7 +51,26 @@ class FantasyTeam extends Model
                     'league_id',
                     'assigned_by_user_id',
                     'purchase_price',
-                    'assigned_at', 'released_at',
-                ])->withTimestamps();
+                    'assigned_at',
+                    'released_at',
+                    'assigned_at',
+                    'released_at',
+                ]
+            )->withTimestamps();
+    }
+
+    public function playerAssignments(): HasMany
+    {
+        return $this->hasMany(FantasyTeamPlayer::class);
+    }
+
+    public function formations(): HasMany
+    {
+        return $this->hasMany(Formation::class);
+    }
+
+    public function matchdayScores(): HasMany
+    {
+        return $this->hasMany(TeamMatchdayScore::class);
     }
 }

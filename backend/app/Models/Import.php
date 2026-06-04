@@ -21,6 +21,11 @@ class Import extends Model
         'completed_at',
     ];
 
+    protected $casts = [
+        'started_at' => 'datetime',
+        'completed_at' => 'datetime',
+    ];
+
     public function importedBy()
     {
         return $this->belongsTo(User::class, 'imported_by_user_id');

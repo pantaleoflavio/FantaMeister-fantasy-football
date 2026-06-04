@@ -1,0 +1,49 @@
+<?php
+
+namespace App\Models;
+
+use App\Models\FantasyTeam;
+use App\Models\League;
+use App\Models\Player;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+class FantasyTeamPlayer extends Model
+{
+    protected $fillable = [
+        'league_id',
+        'fantasy_team_id',
+        'player_id',
+        'assigned_by_user_id',
+        'purchase_price',
+        'assigned_at',
+        'released_at',
+    ];
+
+    protected $casts = [
+        'purchase_price' => 'decimal:2',
+        'assigned_at' => 'datetime',
+        'released_at' => 'datetime',
+    ];
+
+    public function league(): BelongsTo
+    {
+        return $this->belongsTo(League::class);
+    }
+
+    public function fantasyTeam(): BelongsTo
+    {
+        return $this->belongsTo(FantasyTeam::class);
+    }
+
+    public function player(): BelongsTo
+    {
+        return $this->belongsTo(Player::class);
+    }
+
+    public function assignedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'assigned_by_user_id');
+    }
+}

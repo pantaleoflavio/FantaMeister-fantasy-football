@@ -2,8 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\FantasyTeam;
+use App\Models\FormationModule;
+use App\Models\FormationPlayer;
+use App\Models\League;
+use App\Models\Matchday;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Formation extends Model
@@ -34,5 +40,30 @@ class Formation extends Model
     public function players(): HasMany
     {
         return $this->hasMany(FormationPlayer::class);
+    }
+
+    public function league(): BelongsTo
+    {
+        return $this->belongsTo(League::class);
+    }
+
+    public function fantasyTeam(): BelongsTo
+    {
+        return $this->belongsTo(FantasyTeam::class);
+    }
+
+    public function matchday(): BelongsTo
+    {
+        return $this->belongsTo(Matchday::class);
+    }
+
+    public function formationModule(): BelongsTo
+    {
+        return $this->belongsTo(FormationModule::class);
+    }
+
+    public function sourceFormation(): BelongsTo
+    {
+        return $this->belongsTo(self::class, 'source_formation_id');
     }
 }

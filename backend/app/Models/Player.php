@@ -2,17 +2,29 @@
 
 namespace App\Models;
 
+use App\Models\PlayerRole;
+use App\Models\PlayerScore;
+use App\Models\RealClub;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Player extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'real_club_id', 'external_id', 'first_name', 'last_name', 'display_name', 'slug', 'birth_date', 'quotation', 'is_active',
+        'real_club_id',
+        'external_id',
+        'first_name',
+        'last_name',
+        'display_name',
+        'slug',
+        'birth_date',
+        'quotation',
+        'is_active',
     ];
 
     protected $casts = [
@@ -29,5 +41,15 @@ class Player extends Model
     public function roles(): BelongsToMany
     {
         return $this->belongsToMany(PlayerRole::class)->withPivot('is_primary')->withTimestamps();
+    }
+
+    public function primaryRole(): BelongsToMany
+    {
+        return $this->roles()->wherePivot('is_primary', true);
+    }
+
+    public function scores(): HasMany
+    {
+        return $this->hasMany(PlayerScore::class);
     }
 }
