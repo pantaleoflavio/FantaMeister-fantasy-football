@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 class RegisterUserService
 {
     /**
-     * @param array{name:string,email:string,password:string} $attributes
+     * @param  array{name:string,email:string,password:string}  $attributes
      * @return array{token:string,user:User}
      */
     public function execute(array $attributes): array
@@ -22,6 +22,7 @@ class RegisterUserService
 
         $userRole = Role::firstOrCreate(['name' => 'user']);
         $user->roles()->syncWithoutDetaching([$userRole->id]);
+
         return [
             'token' => $user->createToken('auth-token')->plainTextToken,
             'user' => $user->load('roles'),

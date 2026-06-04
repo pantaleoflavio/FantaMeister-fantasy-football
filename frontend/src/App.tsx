@@ -1,18 +1,18 @@
-import { Route, Routes, Link, useNavigate, useSearchParams } from 'react-router-dom'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { Route, Routes, Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
-import { authApi } from './lib/api'
-import { useAuth } from './features/auth/AuthProvider'
-import { ProtectedRoute } from './components/routing/ProtectedRoute'
-import { GuestRoute } from './components/routing/GuestRoute'
-import { t } from './i18n'
+import { authApi } from './lib/api';
+import { useAuth } from './features/auth/AuthProvider';
+import { ProtectedRoute } from './components/routing/ProtectedRoute';
+import { GuestRoute } from './components/routing/GuestRoute';
+import { t } from './i18n';
 
 function Nav() {
-  const { user, logout } = useAuth()
-  const nav = useNavigate()
+  const { user, logout } = useAuth();
+  const nav = useNavigate();
 
   return (
     <nav>
@@ -24,32 +24,32 @@ function Nav() {
 
           <button
             onClick={async () => {
-              await logout()
-              nav('/login')
+              await logout();
+              nav('/login');
             }}
           >
-             {t('auth.logout')}
+            {t('auth.logout')}
           </button>
         </>
       ) : (
         <>
-         <Link to="/login">{t('auth.login')}</Link>{' '}
+          <Link to="/login">{t('auth.login')}</Link>{' '}
           <Link to="/register">{t('auth.register')}</Link>
         </>
       )}
     </nav>
-  )
+  );
 }
 
 function Home() {
   const q = useQuery({
     queryKey: ['health'],
     queryFn: authApi.health,
-  })
+  });
 
   return (
     <div>
-       <h1>{t('app.name')}</h1>
+      <h1>{t('app.name')}</h1>
 
       {q.isLoading && <p>{t('common.loading')}</p>}
 
@@ -59,17 +59,17 @@ function Home() {
         </p>
       )}
     </div>
-  )
+  );
 }
 
 function Login() {
-  const { login } = useAuth()
-  const nav = useNavigate()
+  const { login } = useAuth();
+  const nav = useNavigate();
 
   const schema = z.object({
     email: z.string().email(),
     password: z.string().min(1),
-  })
+  });
 
   const {
     register,
@@ -77,15 +77,15 @@ function Login() {
     formState: { errors },
   } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
-  })
+  });
 
   const m = useMutation({
     mutationFn: authApi.login,
     onSuccess: (d) => {
-      login(d.token, d.user)
-      nav('/')
+      login(d.token, d.user);
+      nav('/');
     },
-  })
+  });
 
   return (
     <form onSubmit={handleSubmit((v) => m.mutate(v))}>
@@ -103,12 +103,12 @@ function Login() {
 
       <Link to="/forgot-password">{t('auth.forgotPasswordLink')}</Link>
     </form>
-  )
+  );
 }
 
 function Register() {
-  const { login } = useAuth()
-  const nav = useNavigate()
+  const { login } = useAuth();
+  const nav = useNavigate();
 
   const schema = z
     .object({
@@ -120,19 +120,19 @@ function Register() {
     .refine((v) => v.password === v.password_confirmation, {
       path: ['password_confirmation'],
       message: t('auth.passwordsMustMatch'),
-    })
+    });
 
   const f = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
-  })
+  });
 
   const m = useMutation({
     mutationFn: authApi.register,
     onSuccess: (d) => {
-      login(d.token, d.user)
-      nav('/')
+      login(d.token, d.user);
+      nav('/');
     },
-  })
+  });
 
   return (
     <form onSubmit={f.handleSubmit((v) => m.mutate(v))}>
@@ -153,21 +153,21 @@ function Register() {
 
       <p>{m.error instanceof Error ? m.error.message : ''}</p>
     </form>
-  )
+  );
 }
 
 function ForgotPassword() {
   const schema = z.object({
     email: z.string().email(),
-  })
+  });
 
   const f = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
-  })
+  });
 
   const m = useMutation({
     mutationFn: authApi.forgotPassword,
-  })
+  });
 
   return (
     <form onSubmit={f.handleSubmit((v) => m.mutate(v))}>
@@ -179,14 +179,14 @@ function ForgotPassword() {
 
       <p>{m.data?.message}</p>
     </form>
-  )
+  );
 }
 
 function ResetPassword() {
-  const [params] = useSearchParams()
+  const [params] = useSearchParams();
 
-  const token = params.get('token') ?? ''
-  const email = params.get('email') ?? ''
+  const token = params.get('token') ?? '';
+  const email = params.get('email') ?? '';
 
   const schema = z
     .object({
@@ -196,11 +196,11 @@ function ResetPassword() {
     .refine((v) => v.password === v.password_confirmation, {
       path: ['password_confirmation'],
       message: t('auth.passwordsMustMatch'),
-    })
+    });
 
   const f = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
-  })
+  });
 
   const m = useMutation({
     mutationFn: (v: z.infer<typeof schema>) =>
@@ -209,7 +209,7 @@ function ResetPassword() {
         token,
         email,
       }),
-  })
+  });
 
   return (
     <form onSubmit={f.handleSubmit((v) => m.mutate(v))}>
@@ -227,7 +227,7 @@ function ResetPassword() {
 
       <p>{m.data?.message}</p>
     </form>
-  )
+  );
 }
 
 export function App() {
@@ -249,5 +249,5 @@ export function App() {
         <Route path="/reset-password" element={<ResetPassword />} />
       </Routes>
     </>
-  )
+  );
 }

@@ -8,11 +8,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class ImportRowError extends Model
 {
     protected $fillable = [
-        'import_id','row_number','row_data','error_message'
+        'import_id', 'row_number', 'row_data', 'error_message',
     ];
+
     protected $casts = [
-        'row_data' => 'array'
+        'row_data' => 'array',
     ];
+
     public function import(): BelongsTo
     {
         return $this->belongsTo(Import::class);

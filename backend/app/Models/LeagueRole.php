@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class LeagueRole extends Model
 {
-    protected $fillable =[
+    protected $fillable = [
         'key',
-        'label'
+        'label',
     ];
 }

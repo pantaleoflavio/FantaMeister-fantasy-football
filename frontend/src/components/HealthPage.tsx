@@ -1,8 +1,11 @@
-import { useQuery } from '@tanstack/react-query'
-import { authApi } from '../lib/api'
+import { useQuery } from '@tanstack/react-query';
+import { authApi } from '../lib/api';
 
 export function HealthPage() {
-  const { data, isLoading, isError, error } = useQuery({ queryKey: ['health'], queryFn: authApi.health })
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ['health'],
+    queryFn: authApi.health,
+  });
 
   return (
     <main className="min-h-screen bg-slate-100 p-8 text-slate-900">
@@ -16,5 +19,5 @@ export function HealthPage() {
         </div>
       )}
     </main>
-  )
+  );
 }

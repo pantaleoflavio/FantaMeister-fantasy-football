@@ -2,9 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\LeagueInvitation;
-use App\Models\LeagueSetting;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class League extends Model
 {
     use HasFactory;
-    
+
     protected $fillable = [
         'season_id',
         'league_type_id',
@@ -24,7 +21,7 @@ class League extends Model
         'slug',
         'description',
         'max_participants',
-        'invite_code'
+        'invite_code',
     ];
 
     public function season()

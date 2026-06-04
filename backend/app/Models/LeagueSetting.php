@@ -10,11 +10,13 @@ class LeagueSetting extends Model
     protected $fillable = [
         'league_id',
         'key',
-        'value'
+        'value',
     ];
+
     protected $casts = [
-        'value' => 'array'
+        'value' => 'array',
     ];
+
     public function league(): BelongsTo
     {
         return $this->belongsTo(League::class);

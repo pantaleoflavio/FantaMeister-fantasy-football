@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\ImportRowError;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -19,7 +18,7 @@ class Import extends Model
         'successful_rows',
         'failed_rows',
         'started_at',
-        'completed_at'
+        'completed_at',
     ];
 
     public function importedBy()

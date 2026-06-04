@@ -10,7 +10,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             RoleSeeder::class,
-            GlobalAdminSeeder::class
-        ]); 
+            GlobalAdminSeeder::class,
+        ]);
     }
 }

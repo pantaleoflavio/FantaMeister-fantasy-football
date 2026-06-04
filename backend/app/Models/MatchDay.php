@@ -2,9 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\PlayerScore;
-use App\Models\RealMatch;
-use App\Models\Season;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,22 +10,26 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Matchday extends Model
 {
     use HasFactory;
-    
+
     protected $fillable = [
-        'season_id','number','name','starts_at','ends_at','status'
+        'season_id', 'number', 'name', 'starts_at', 'ends_at', 'status',
     ];
+
     protected $casts = [
         'starts_at' => 'datetime',
-        'ends_at' => 'datetime'
+        'ends_at' => 'datetime',
     ];
+
     public function season(): BelongsTo
     {
         return $this->belongsTo(Season::class);
     }
+
     public function realMatches(): HasMany
     {
         return $this->hasMany(RealMatch::class);
     }
+
     public function playerScores(): HasMany
     {
         return $this->hasMany(PlayerScore::class);
