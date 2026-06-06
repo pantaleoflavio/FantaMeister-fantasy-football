@@ -24,12 +24,12 @@ class League extends Model
         'invite_code',
     ];
 
-    public function season()
+    public function season(): BelongsTo
     {
         return $this->belongsTo(Season::class);
     }
 
-    public function type()
+    public function type(): BelongsTo
     {
         return $this->belongsTo(LeagueType::class, 'league_type_id');
     }

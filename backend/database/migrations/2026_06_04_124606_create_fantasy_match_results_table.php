@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('fantasy_match_results', function (Blueprint $table) {
             $table->id();
-                        $table->foreignId('fantasy_match_id')->unique()->constrained()->cascadeOnDelete();
+            $table->foreignId('fantasy_match_id')->unique()->constrained()->cascadeOnDelete();
             $table->decimal('home_points', 8, 2)->default(0);
             $table->decimal('away_points', 8, 2)->default(0);
             $table->unsignedSmallInteger('home_goals')->default(0);

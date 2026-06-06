@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('player_scores', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('player_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('player_season_registration_id')->constrained()->cascadeOnDelete();
             $table->foreignId('matchday_id')->constrained()->cascadeOnDelete();
             $table->decimal('base_rating', 4, 2)->nullable();
             $table->integer('goals')->default(0);
@@ -26,7 +26,7 @@ return new class extends Migration
             $table->decimal('final_score', 5, 2)->nullable();
             $table->string('status')->default('pending');
             $table->timestamps();
-            $table->unique(['player_id', 'matchday_id']);
+            $table->unique(['matchday_id', 'player_season_registration_id']);
         });
     }
 

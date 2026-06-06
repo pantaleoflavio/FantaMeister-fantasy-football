@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Season extends Model
@@ -11,7 +12,7 @@ class Season extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'starts_at', 'ends_at', 'is_active',
+        'real_competition_id', 'name', 'starts_at', 'ends_at', 'is_active',
     ];
 
     protected $casts = [
@@ -20,14 +21,24 @@ class Season extends Model
         'is_active' => 'boolean',
     ];
 
+    public function realCompetition(): BelongsTo
+    {
+        return $this->belongsTo(RealCompetition::class);
+    }
+
+    public function seasonClubs(): HasMany
+    {
+        return $this->hasMany(SeasonClub::class);
+    }
+
     public function matchdays(): HasMany
     {
         return $this->hasMany(Matchday::class);
     }
 
-    public function realClubs(): HasMany
+    public function playerSeasonRegistrations(): HasMany
     {
-        return $this->hasMany(RealClub::class);
+        return $this->hasMany(PlayerSeasonRegistration::class);
     }
 
     public function leagues(): HasMany

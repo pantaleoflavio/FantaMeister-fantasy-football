@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\FormationModule;
-use App\Models\PlayerRole;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class FormationModuleRequirement extends Model
 {
     use HasFactory;
-    
+
     protected $fillable =
         [
             'formation_module_id',

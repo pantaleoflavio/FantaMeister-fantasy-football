@@ -19,7 +19,7 @@ class FormationModuleSeederTest extends TestCase
         $requirements = $module->requirements()
             ->with('playerRole')
             ->get()
-            ->mapWithKeys(fn($requirement) => [
+            ->mapWithKeys(fn ($requirement) => [
                 $requirement->playerRole->key => $requirement->required_count,
             ])
             ->all();

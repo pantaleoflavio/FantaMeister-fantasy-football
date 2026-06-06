@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\FantasyMatch;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class FantasyMatchResult extends Model
 {
     use HasFactory;
-    
+
     protected $fillable = [
         'fantasy_match_id',
         'home_points',

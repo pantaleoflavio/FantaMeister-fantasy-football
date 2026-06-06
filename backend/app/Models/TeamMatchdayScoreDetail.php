@@ -2,9 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Player;
-use App\Models\PlayerScore;
-use App\Models\TeamMatchdayScore;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 

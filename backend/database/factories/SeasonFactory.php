@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\RealCompetition;
 use App\Models\Season;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -15,7 +16,8 @@ class SeasonFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->unique()->year() . '/' . $this->faker->year(),
+            'real_competition_id' => RealCompetition::factory(),
+            'name' => $this->faker->unique()->year().'/'.$this->faker->year(),
             'starts_at' => now()->startOfYear(),
             'ends_at' => now()->endOfYear(),
             'is_active' => true,

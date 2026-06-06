@@ -2,15 +2,14 @@
 
 namespace App\Models;
 
-use App\Models\Import;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ImportRowError extends Model
 {
-     use HasFactory;
-     
+    use HasFactory;
+
     protected $fillable = [
         'import_id', 'row_number', 'row_data', 'error_message',
     ];

@@ -2,7 +2,7 @@
 
 FantaMeister is a fantasy football web application inspired by the Italian Fantacalcio model.
 
-The application is designed for one real football competition per deployment. It is not a multi-championship SaaS platform. The same codebase can be reused for different competitions by changing environment variables, configuration files, translations, branding and imported data.
+The application uses one deployment to support multiple real football competitions. Seasons belong to real competitions, while real clubs and players are global identities that can participate in multiple competition seasons.
 
 ## Current project status
 
@@ -27,6 +27,7 @@ Completed:
 * protected frontend routes
 * frontend i18n structure for auth/navigation
 * core fantasy football domain model (Milestone 3)
+* multi-competition real-football domain model (Milestone 3.5)
 * granular database migrations
 * Eloquent domain models and relationships
 * lookup seeders

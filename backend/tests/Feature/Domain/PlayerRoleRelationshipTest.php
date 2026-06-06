@@ -46,7 +46,7 @@ class PlayerRoleRelationshipTest extends TestCase
         );
     }
 
-     public function test_multiple_primary_roles_are_visible_when_application_code_creates_them(): void
+    public function test_multiple_primary_roles_are_visible_when_application_code_creates_them(): void
     {
         $this->seed();
 

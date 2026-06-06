@@ -6,23 +6,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class FormationModule extends Model
+class RealCompetition extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'label',
-        'is_active',
+        'name', 'code', 'country_code', 'type', 'is_active',
     ];
 
-    //
     protected $casts = [
         'is_active' => 'boolean',
     ];
 
-    public function requirements(): HasMany
+    public function seasons(): HasMany
     {
-        return $this->hasMany(FormationModuleRequirement::class);
+        return $this->hasMany(Season::class);
     }
 }

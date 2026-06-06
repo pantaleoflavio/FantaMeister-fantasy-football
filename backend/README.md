@@ -43,9 +43,18 @@ From the host:
 docker compose exec backend php artisan route:list --path=api/v1
 ```
 
-## Milestone 3 domain status
+## Domain status
 
-Milestone 3 is implemented and stabilized for the core fantasy football domain model. The backend includes granular migrations, Eloquent models and relationships, lookup seeders, high-priority factories, and focused domain tests for relationships, JSON casting, lookup seeders, and constraints.
+Milestone 3.5 extends the stabilized core fantasy football domain with multi-competition support in one database. The real-football model follows these boundaries:
+
+* real competitions have many seasons
+* leagues and matchdays belong to seasons
+* real clubs are global identities connected to seasons through `season_clubs`
+* players are global identities connected to clubs and seasons through `player_season_registrations`
+* real matches reference the participating season clubs
+* player scores reference season-specific player registrations
+
+The backend includes granular migrations, Eloquent models and relationships, lookup seeders, high-priority factories, and focused domain tests for relationships, JSON casting, lookup seeders, and constraints.
 
 ## Architecture conventions
 
@@ -93,7 +102,7 @@ GLOBAL_ADMIN_PASSWORD=password
 
 ## Configuration
 
-Main competition configuration:
+Main deployment branding configuration:
 
 ```text
 config/competition.php
@@ -101,7 +110,7 @@ config/competition.php
 
 Deployment-specific values should come from environment variables.
 
-Do not hardcode real competition names inside code.
+Do not use deployment branding configuration as the source of real-competition domain data.
 
 ## Docker development
 
@@ -270,7 +279,7 @@ Existing auth migrations should not be modified unless explicitly requested.
 
 ## Domain model milestone
 
-Milestone 3 is implemented and stabilized with:
+Milestone 3 and the Milestone 3.5 multi-competition refactor are implemented and stabilized with:
 
 * core domain migrations
 * Eloquent models

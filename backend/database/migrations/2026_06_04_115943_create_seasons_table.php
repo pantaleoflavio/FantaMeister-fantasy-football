@@ -10,11 +10,13 @@ return new class extends Migration
     {
         Schema::create('seasons', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
+            $table->foreignId('real_competition_id')->constrained()->restrictOnDelete();
+            $table->string('name');
             $table->date('starts_at');
             $table->date('ends_at');
             $table->boolean('is_active')->default(false);
             $table->timestamps();
+            $table->unique(['real_competition_id', 'name']);
         });
     }
 

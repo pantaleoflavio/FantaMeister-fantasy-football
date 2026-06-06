@@ -3,22 +3,24 @@
 namespace Database\Factories;
 
 use App\Models\Matchday;
-use App\Models\Player;
 use App\Models\PlayerScore;
+use App\Models\PlayerSeasonRegistration;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends Factory<PlayerScore>
- */
+/** @extends Factory<PlayerScore> */
 class PlayerScoreFactory extends Factory
 {
     protected $model = PlayerScore::class;
 
     public function definition(): array
     {
+        $matchday = Matchday::factory()->create();
+
         return [
-            'player_id' => Player::factory(),
-            'matchday_id' => Matchday::factory(),
+            'player_season_registration_id' => PlayerSeasonRegistration::factory()->create([
+                'season_id' => $matchday->season_id,
+            ])->id,
+            'matchday_id' => $matchday->id,
             'base_rating' => 6.00,
             'goals' => 0,
             'assists' => 0,

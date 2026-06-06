@@ -2,20 +2,18 @@
 
 namespace App\Models;
 
-use App\Models\Matchday;
-use App\Models\RealClub;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class RealMatch extends Model
 {
-     use HasFactory;
-     
+    use HasFactory;
+
     protected $fillable = [
         'matchday_id',
-        'home_club_id',
-        'away_club_id',
+        'home_season_club_id',
+        'away_season_club_id',
         'kickoff_at',
         'home_score',
         'away_score',
@@ -31,13 +29,13 @@ class RealMatch extends Model
         return $this->belongsTo(Matchday::class);
     }
 
-    public function homeClub(): BelongsTo
+    public function homeSeasonClub(): BelongsTo
     {
-        return $this->belongsTo(RealClub::class, 'home_club_id');
+        return $this->belongsTo(SeasonClub::class, 'home_season_club_id');
     }
 
-    public function awayClub(): BelongsTo
+    public function awaySeasonClub(): BelongsTo
     {
-        return $this->belongsTo(RealClub::class, 'away_club_id');
+        return $this->belongsTo(SeasonClub::class, 'away_season_club_id');
     }
 }

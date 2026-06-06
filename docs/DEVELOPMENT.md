@@ -206,9 +206,15 @@ From the host machine:
 localhost:5433
 ```
 
+## Multi-competition domain model
+
+The application stores multiple real football competitions in one database. Seasons belong to real competitions, and fantasy leagues belong to seasons. Real clubs and players are global identities: `season_clubs` records club participation in a season, while `player_season_registrations` records a player's club, eligibility, quotation, and active status for a season.
+
+Real matches reference season clubs, and player scores reference player season registrations. This keeps competition- and season-specific data separate from global club and player identity.
+
 ## Migrations
 
-Use granular Laravel migrations. Milestone 3 follows this convention for the domain schema.
+Use granular Laravel migrations. The domain schema follows this convention.
 
 Preferred rule:
 

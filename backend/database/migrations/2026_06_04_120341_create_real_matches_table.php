@@ -11,13 +11,14 @@ return new class extends Migration
         Schema::create('real_matches', function (Blueprint $table) {
             $table->id();
             $table->foreignId('matchday_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('home_club_id')->constrained('real_clubs')->restrictOnDelete();
-            $table->foreignId('away_club_id')->constrained('real_clubs')->restrictOnDelete();
+            $table->foreignId('home_season_club_id')->constrained('season_clubs')->restrictOnDelete();
+            $table->foreignId('away_season_club_id')->constrained('season_clubs')->restrictOnDelete();
             $table->timestamp('kickoff_at');
             $table->unsignedSmallInteger('home_score')->nullable();
             $table->unsignedSmallInteger('away_score')->nullable();
             $table->string('status')->default('scheduled');
             $table->timestamps();
+            $table->unique(['matchday_id', 'home_season_club_id', 'away_season_club_id']);
         });
     }
 

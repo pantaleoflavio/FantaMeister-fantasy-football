@@ -2,11 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\FantasyTeamPlayer;
-use App\Models\Formation;
-use App\Models\League;
-use App\Models\Player;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -28,10 +23,10 @@ class FantasyTeam extends Model
     ];
 
     protected $casts =
-    [
-        'budget' => 'decimal:2',
-        'remaining_budget' => 'decimal:2',
-    ];
+        [
+            'budget' => 'decimal:2',
+            'remaining_budget' => 'decimal:2',
+        ];
 
     public function league(): BelongsTo
     {

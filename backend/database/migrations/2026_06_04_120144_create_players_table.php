@@ -10,17 +10,14 @@ return new class extends Migration
     {
         Schema::create('players', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('real_club_id')->constrained('real_clubs')->restrictOnDelete();
             $table->string('external_id')->nullable()->index();
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('display_name');
-            $table->string('slug');
+            $table->string('slug')->unique();
             $table->date('birth_date')->nullable();
-            $table->decimal('quotation', 8, 2)->default(0);
             $table->boolean('is_active')->default(true);
             $table->timestamps();
-            $table->unique(['real_club_id', 'slug']);
         });
     }
 

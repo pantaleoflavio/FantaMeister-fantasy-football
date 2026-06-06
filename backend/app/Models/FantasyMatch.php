@@ -2,10 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\FantasyMatchResult;
-use App\Models\FantasyTeam;
-use App\Models\League;
-use App\Models\Matchday;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class FantasyMatch extends Model
 {
     use HasFactory;
-    
+
     protected $fillable = [
         'league_id',
         'matchday_id',

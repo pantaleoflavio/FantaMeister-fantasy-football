@@ -6,21 +6,27 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
-        Schema::create('real_clubs', function (Blueprint $table) {
+        Schema::create('real_competitions', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('short_name', 32);
-            $table->string('slug')->unique();
+            $table->string('code')->unique();
             $table->string('country_code', 2)->nullable();
-            $table->string('logo_path')->nullable();
+            $table->string('type');
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
-        Schema::dropIfExists('real_clubs');
+        Schema::dropIfExists('real_competitions');
     }
 };
