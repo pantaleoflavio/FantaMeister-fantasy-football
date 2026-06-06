@@ -5,12 +5,15 @@ namespace App\Models;
 use App\Models\Matchday;
 use App\Models\Player;
 use App\Models\TeamMatchdayScoreDetail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class PlayerScore extends Model
 {
+     use HasFactory;
+     
     protected $fillable = [
         'player_id',
         'matchday_id',

@@ -7,12 +7,15 @@ use App\Models\Formation;
 use App\Models\League;
 use App\Models\Matchday;
 use App\Models\TeamMatchdayScoreDetail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class TeamMatchdayScore extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'league_id',
         'fantasy_team_id',

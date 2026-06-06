@@ -2,11 +2,15 @@
 
 namespace App\Models;
 
+use App\Models\FormationModuleRequirement;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class FormationModule extends Model
 {
+    use HasFactory;
+    
     protected $fillable = [
         'name',
         'label',

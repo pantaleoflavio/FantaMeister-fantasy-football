@@ -4,11 +4,14 @@ namespace App\Models;
 
 use App\Models\Matchday;
 use App\Models\RealClub;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class RealMatch extends Model
 {
+     use HasFactory;
+     
     protected $fillable = [
         'matchday_id',
         'home_club_id',

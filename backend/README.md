@@ -43,6 +43,10 @@ From the host:
 docker compose exec backend php artisan route:list --path=api/v1
 ```
 
+## Milestone 3 domain status
+
+Milestone 3 is implemented and stabilized for the core fantasy football domain model. The backend includes granular migrations, Eloquent models and relationships, lookup seeders, high-priority factories, and focused domain tests for relationships, JSON casting, lookup seeders, and constraints.
+
 ## Architecture conventions
 
 Use:
@@ -101,9 +105,10 @@ Do not hardcode real competition names inside code.
 
 ## Docker development
 
-Start the full stack from the repository root:
+Start the full stack from the repository root after preparing the backend environment file:
 
 ```bash
+cp backend/.env.example backend/.env
 docker compose up -d --build
 ```
 
@@ -112,6 +117,8 @@ Enter the backend container:
 ```bash
 docker compose exec backend sh
 ```
+
+The backend development container runs `composer install` before starting FrankenPHP. This keeps a fresh `/app/vendor` named volume compatible with first-time `docker compose up -d --build` and after intentional volume resets.
 
 Run backend tests:
 
@@ -131,19 +138,7 @@ Clear Laravel caches:
 php artisan optimize:clear
 ```
 
-If the `vendor` directory is missing inside the backend container, run:
-
-```bash
-composer install
-```
-
-This can happen after:
-
-```bash
-docker compose down -v
-```
-
-because named Docker volumes are removed.
+If the `vendor` directory is missing inside an already-running backend container, run `composer install` inside that container or recreate the backend service so the startup command repopulates the named volume. This can happen after intentionally removing volumes with `docker compose down -v`.
 
 ## Database
 
@@ -190,6 +185,7 @@ Validate Composer metadata:
 
 ```bash
 docker compose exec backend composer validate
+docker compose exec backend composer dump-autoload
 ```
 
 ## Code style
@@ -274,16 +270,16 @@ Existing auth migrations should not be modified unless explicitly requested.
 
 ## Domain model milestone
 
-The current domain model work should add:
+Milestone 3 is implemented and stabilized with:
 
 * core domain migrations
 * Eloquent models
 * relationships
 * lookup seeders
-* factories
-* relationship tests
+* high-priority factories
+* focused relationship and constraint tests
 
-It should not add:
+Milestone 3 does not include:
 
 * gameplay API routes
 * Filament resources

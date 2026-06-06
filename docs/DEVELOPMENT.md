@@ -24,7 +24,8 @@ cd /mnt/c/xampp/htdocs/FantaMeister-fantasy-football
 
 ## Start the local stack
 
-```bash
+```bash#
+cp backend/.env.example backend/.env
 docker compose up -d --build
 ```
 
@@ -62,6 +63,8 @@ Enter the backend container:
 docker compose exec backend sh
 ```
 
+The backend development service sets Docker PostgreSQL credentials explicitly, including `DB_PASSWORD=password`, and runs `composer install` before FrankenPHP starts so a fresh backend vendor volume is populated automatically.
+
 Common backend commands:
 
 ```bash
@@ -78,6 +81,7 @@ From the host:
 docker compose exec backend php artisan test
 docker compose exec backend php artisan migrate:fresh --seed
 docker compose exec backend composer validate
+docker compose exec backend composer dump-autoload
 ```
 
 ## Frontend container workflow
@@ -108,6 +112,7 @@ Before committing changes, run:
 ```bash
 docker compose exec backend composer validate
 docker compose exec backend php artisan migrate:fresh --seed
+docker compose exec backend composer dump-autoload
 docker compose exec backend php artisan test
 docker compose exec frontend npm run build
 curl http://127.0.0.1:8000/api/v1/health
@@ -187,8 +192,12 @@ Never commit real `.env` files.
 Inside Docker:
 
 ```env
+DB_CONNECTION=pgsql
 DB_HOST=postgres
 DB_PORT=5432
+DB_DATABASE=fantasy_football
+DB_USERNAME=fantasy
+DB_PASSWORD=password
 ```
 
 From the host machine:
@@ -199,7 +208,7 @@ localhost:5433
 
 ## Migrations
 
-Use granular Laravel migrations.
+Use granular Laravel migrations. Milestone 3 follows this convention for the domain schema.
 
 Preferred rule:
 

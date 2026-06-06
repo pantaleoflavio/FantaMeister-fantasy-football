@@ -26,15 +26,16 @@ Completed:
 * frontend auth pages
 * protected frontend routes
 * frontend i18n structure for auth/navigation
+* core fantasy football domain model (Milestone 3)
+* granular database migrations
+* Eloquent domain models and relationships
+* lookup seeders
+* high-priority domain factories
+* focused domain relationship and constraint tests
 
 In progress:
 
-* core fantasy football domain model
-* database migrations
-* Eloquent models
-* lookup seeders
-* factories
-* relationship tests
+* Milestone 4 planning
 
 ## Repository structure
 
@@ -77,11 +78,14 @@ Planned infrastructure:
 
 ## Local development with Docker Compose
 
-Start the full stack:
+Prepare the backend environment file, then start the full stack:
 
 ```bash
+cp backend/.env.example backend/.env
 docker compose up -d --build
 ```
+
+The Docker backend service explicitly connects to PostgreSQL with `DB_PASSWORD=password`, matching the `POSTGRES_PASSWORD=password` value used by the PostgreSQL service. The backend development container runs `composer install` before starting FrankenPHP, so a fresh `backend_vendor` named volume is populated automatically.
 
 Check running services:
 
@@ -138,6 +142,7 @@ php artisan test
 php artisan migrate:fresh --seed
 php artisan route:list --path=api/v1
 composer validate
+composer dump-autoload
 ```
 
 From the host:
@@ -176,6 +181,7 @@ Before committing backend/frontend changes, run:
 
 ```bash
 docker compose exec backend composer validate
+docker compose exec backend composer dump-autoload
 docker compose exec backend php artisan migrate:fresh --seed
 docker compose exec backend php artisan test
 docker compose exec frontend npm run build
@@ -213,8 +219,12 @@ localhost:5433
 Inside Docker, the backend connects to PostgreSQL using:
 
 ```text
+DB_CONNECTION=pgsql
 DB_HOST=postgres
 DB_PORT=5432
+DB_DATABASE=fantasy_football
+DB_USERNAME=fantasy
+DB_PASSWORD=password
 ```
 
 Do not use `5433` inside the backend container. `5433` is only the host-side mapped port.

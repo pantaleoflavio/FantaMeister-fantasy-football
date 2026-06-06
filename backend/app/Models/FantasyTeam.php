@@ -53,8 +53,6 @@ class FantasyTeam extends Model
                     'purchase_price',
                     'assigned_at',
                     'released_at',
-                    'assigned_at',
-                    'released_at',
                 ]
             )->withTimestamps();
     }

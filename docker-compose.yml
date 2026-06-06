@@ -38,6 +38,7 @@ services:
       DB_PORT: 5432
       DB_DATABASE: fantasy_football
       DB_USERNAME: fantasy
+      DB_PASSWORD: password
     depends_on:
       - postgres
 

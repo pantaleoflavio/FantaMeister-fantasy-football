@@ -18,10 +18,12 @@ class FormationFactory extends Factory
 
     public function definition(): array
     {
+        $league = League::factory()->create();
+
         return [
-            'league_id' => League::factory(),
-            'fantasy_team_id' => FantasyTeam::factory(),
-            'matchday_id' => Matchday::factory(),
+            'league_id' => $league->id,
+            'fantasy_team_id' => FantasyTeam::factory()->create(['league_id' => $league->id])->id,
+            'matchday_id' => Matchday::factory()->create(['season_id' => $league->season_id])->id,
             'formation_module_id' => FormationModule::query()->firstOrCreate(
                 ['name' => '4-3-3'],
                 ['label' => '4-3-3', 'is_active' => true],

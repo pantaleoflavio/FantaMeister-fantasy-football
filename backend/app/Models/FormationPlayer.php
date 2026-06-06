@@ -5,11 +5,14 @@ namespace App\Models;
 use App\Models\Formation;
 use App\Models\Player;
 use App\Models\PlayerRole;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class FormationPlayer extends Model
 {
+    use HasFactory;
+    
     protected $fillable = [
         'formation_id',
         'player_id',
