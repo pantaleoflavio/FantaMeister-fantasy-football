@@ -18,30 +18,46 @@ class PlayerScoreResource extends Resource
 {
     protected static ?string $model = PlayerScore::class;
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Scores';
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin.navigation.groups.scores');
+    }
 
-    protected static ?string $navigationLabel = 'Player Scores';
+    public static function getNavigationLabel(): string
+    {
+        return __('admin.resources.player_scores.plural');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('admin.resources.player_scores.singular');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('admin.resources.player_scores.plural');
+    }
 
     protected static ?string $recordTitleAttribute = 'id';
 
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            Select::make('matchday_id')->label('Matchday')->relationship('matchday', 'name')->searchable()->preload()->required(),
-            Select::make('player_season_registration_id')->label('Player registration')->relationship('playerSeasonRegistration', 'id')->searchable()->preload()->required(),
-            TextInput::make('base_rating')->label('Base rating')->numeric(),
-            TextInput::make('goals')->label('Goals')->numeric(),
-            TextInput::make('assists')->label('Assists')->numeric(),
-            TextInput::make('yellow_cards')->label('Yellow cards')->numeric(),
-            TextInput::make('red_cards')->label('Red cards')->numeric(),
-            TextInput::make('own_goals')->label('Own goals')->numeric(),
-            TextInput::make('penalties_scored')->label('Penalties scored')->numeric(),
-            TextInput::make('penalties_missed')->label('Penalties missed')->numeric(),
-            TextInput::make('penalties_saved')->label('Penalties saved')->numeric(),
-            TextInput::make('goals_conceded')->label('Goals conceded')->numeric(),
-            Toggle::make('clean_sheet')->label('Clean sheet')->default(false),
-            TextInput::make('final_score')->label('Final score')->numeric(),
-            TextInput::make('status')->label('Status')->required(),
+            Select::make('matchday_id')->label(__('admin.labels.matchday'))->relationship('matchday', 'name')->searchable()->preload()->required(),
+            Select::make('player_season_registration_id')->label(__('admin.labels.player_registration'))->relationship('playerSeasonRegistration', 'id')->searchable()->preload()->required(),
+            TextInput::make('base_rating')->label(__('admin.labels.base_rating'))->numeric(),
+            TextInput::make('goals')->label(__('admin.labels.goals'))->numeric(),
+            TextInput::make('assists')->label(__('admin.labels.assists'))->numeric(),
+            TextInput::make('yellow_cards')->label(__('admin.labels.yellow_cards'))->numeric(),
+            TextInput::make('red_cards')->label(__('admin.labels.red_cards'))->numeric(),
+            TextInput::make('own_goals')->label(__('admin.labels.own_goals'))->numeric(),
+            TextInput::make('penalties_scored')->label(__('admin.labels.penalties_scored'))->numeric(),
+            TextInput::make('penalties_missed')->label(__('admin.labels.penalties_missed'))->numeric(),
+            TextInput::make('penalties_saved')->label(__('admin.labels.penalties_saved'))->numeric(),
+            TextInput::make('goals_conceded')->label(__('admin.labels.goals_conceded'))->numeric(),
+            Toggle::make('clean_sheet')->label(__('admin.labels.clean_sheet'))->default(false),
+            TextInput::make('final_score')->label(__('admin.labels.final_score'))->numeric(),
+            TextInput::make('status')->label(__('admin.labels.status'))->required(),
         ]);
     }
 
@@ -49,11 +65,11 @@ class PlayerScoreResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('matchday.name')->label('Name')->searchable()->sortable(),
-                TextColumn::make('playerSeasonRegistration.player.display_name')->label('Display Name')->searchable()->sortable(),
-                TextColumn::make('base_rating')->label('Base Rating')->searchable()->sortable(),
-                TextColumn::make('final_score')->label('Final Score')->searchable()->sortable(),
-                TextColumn::make('status')->label('Status')->searchable()->sortable(),
+                TextColumn::make('matchday.name')->label(__('admin.labels.matchday'))->searchable()->sortable(),
+                TextColumn::make('playerSeasonRegistration.player.display_name')->label(__('admin.labels.display_name'))->searchable()->sortable(),
+                TextColumn::make('base_rating')->label(__('admin.labels.base_rating'))->searchable()->sortable(),
+                TextColumn::make('final_score')->label(__('admin.labels.final_score'))->searchable()->sortable(),
+                TextColumn::make('status')->label(__('admin.labels.status'))->searchable()->sortable(),
             ])
             ->recordActions([EditAction::make()])
             ->toolbarActions([BulkActionGroup::make([DeleteBulkAction::make()])]);

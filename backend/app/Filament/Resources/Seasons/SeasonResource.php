@@ -23,20 +23,36 @@ class SeasonResource extends Resource
 {
     protected static ?string $model = Season::class;
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Competitions';
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin.navigation.groups.competitions');
+    }
 
-    protected static ?string $navigationLabel = 'Seasons';
+    public static function getNavigationLabel(): string
+    {
+        return __('admin.resources.seasons.plural');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('admin.resources.seasons.singular');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('admin.resources.seasons.plural');
+    }
 
     protected static ?string $recordTitleAttribute = 'name';
 
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            Select::make('real_competition_id')->label('Real competition')->relationship('realCompetition', 'name')->searchable()->preload()->required(),
-            TextInput::make('name')->label('Name')->required(),
-            DatePicker::make('starts_at')->label('Starts at')->required(),
-            DatePicker::make('ends_at')->label('Ends at')->required(),
-            Toggle::make('is_active')->label('Active')->default(true),
+            Select::make('real_competition_id')->label(__('admin.labels.real_competition'))->relationship('realCompetition', 'name')->searchable()->preload()->required(),
+            TextInput::make('name')->label(__('admin.labels.name'))->required(),
+            DatePicker::make('starts_at')->label(__('admin.labels.starts_at'))->required(),
+            DatePicker::make('ends_at')->label(__('admin.labels.ends_at'))->required(),
+            Toggle::make('is_active')->label(__('admin.labels.is_active'))->default(true),
         ]);
     }
 
@@ -44,10 +60,10 @@ class SeasonResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('realCompetition.name')->label('Name')->searchable()->sortable(),
-                TextColumn::make('name')->label('Name')->searchable()->sortable(),
-                TextColumn::make('starts_at')->label('Starts At')->dateTime()->sortable(),
-                TextColumn::make('ends_at')->label('Ends At')->dateTime()->sortable(),
+                TextColumn::make('realCompetition.name')->label(__('admin.labels.competition'))->searchable()->sortable(),
+                TextColumn::make('name')->label(__('admin.labels.name'))->searchable()->sortable(),
+                TextColumn::make('starts_at')->label(__('admin.labels.starts_at'))->dateTime()->sortable(),
+                TextColumn::make('ends_at')->label(__('admin.labels.ends_at'))->dateTime()->sortable(),
                 IconColumn::make('is_active')->boolean(),
             ])
             ->recordActions([EditAction::make()])

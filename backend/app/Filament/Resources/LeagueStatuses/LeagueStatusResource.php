@@ -16,18 +16,34 @@ class LeagueStatusResource extends Resource
 {
     protected static ?string $model = LeagueStatus::class;
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Lookups';
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin.navigation.groups.lookups');
+    }
 
-    protected static ?string $navigationLabel = 'League Statuses';
+    public static function getNavigationLabel(): string
+    {
+        return __('admin.resources.league_statuses.plural');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('admin.resources.league_statuses.singular');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('admin.resources.league_statuses.plural');
+    }
 
     protected static ?string $recordTitleAttribute = 'label';
 
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            TextInput::make('key')->label('Key')->required()->unique(ignoreRecord: true),
-            TextInput::make('label')->label('Label')->required(),
-            TextInput::make('sort_order')->label('Sort order')->numeric(),
+            TextInput::make('key')->label(__('admin.labels.key'))->required()->unique(ignoreRecord: true),
+            TextInput::make('label')->label(__('admin.labels.label'))->required(),
+            TextInput::make('sort_order')->label(__('admin.labels.sort_order'))->numeric(),
         ]);
     }
 
@@ -35,9 +51,9 @@ class LeagueStatusResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('key')->label('Key')->searchable()->sortable(),
-                TextColumn::make('label')->label('Label')->searchable()->sortable(),
-                TextColumn::make('sort_order')->label('Sort Order')->searchable()->sortable(),
+                TextColumn::make('key')->label(__('admin.labels.key'))->searchable()->sortable(),
+                TextColumn::make('label')->label(__('admin.labels.label'))->searchable()->sortable(),
+                TextColumn::make('sort_order')->label(__('admin.labels.sort_order'))->searchable()->sortable(),
             ])
             ->recordActions([EditAction::make()])
             ->toolbarActions([BulkActionGroup::make([DeleteBulkAction::make()])]);

@@ -23,9 +23,25 @@ class RoleResource extends Resource
 {
     protected static ?string $model = Role::class;
 
-    protected static string|\UnitEnum|null $navigationGroup = 'System';
+public static function getNavigationGroup(): ?string
+    {
+        return __('admin.navigation.groups.system');
+    }
 
-    protected static ?string $navigationLabel = 'Roles';
+    public static function getNavigationLabel(): string
+    {
+        return __('admin.resources.roles.plural');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('admin.resources.roles.singular');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('admin.resources.roles.plural');
+    }
 
     protected static ?string $recordTitleAttribute = 'label';
 
@@ -39,10 +55,10 @@ class RoleResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            TextInput::make('name')->label('Name')->required()->unique(ignoreRecord: true),
-            TextInput::make('label')->label('Label')->required(),
-            TextInput::make('level')->label('Level')->numeric(),
-            Toggle::make('is_system')->label('System role')->default(true),
+            TextInput::make('name')->label(__('admin.labels.name'))->required()->unique(ignoreRecord: true),
+            TextInput::make('label')->label(__('admin.labels.label'))->required(),
+            TextInput::make('level')->label(__('admin.labels.level'))->numeric(),
+            Toggle::make('is_system')->label(__('admin.labels.system_role'))->default(true),
         ]);
     }
 
@@ -50,9 +66,9 @@ class RoleResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->label('Name')->searchable()->sortable(),
-                TextColumn::make('label')->label('Label')->searchable()->sortable(),
-                TextColumn::make('level')->label('Level')->searchable()->sortable(),
+                TextColumn::make('name')->label(__('admin.labels.name'))->searchable()->sortable(),
+                TextColumn::make('label')->label(__('admin.labels.label'))->searchable()->sortable(),
+                TextColumn::make('level')->label(__('admin.labels.level'))->searchable()->sortable(),
                 IconColumn::make('is_system')->boolean(),
             ])
             ->recordActions([EditAction::make()])

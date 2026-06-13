@@ -18,20 +18,36 @@ class MatchdayResource extends Resource
 {
     protected static ?string $model = Matchday::class;
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Real Data';
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin.navigation.groups.real_data');
+    }
 
-    protected static ?string $navigationLabel = 'Matchdays';
+    public static function getNavigationLabel(): string
+    {
+        return __('admin.resources.matchdays.plural');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('admin.resources.matchdays.singular');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('admin.resources.matchdays.plural');
+    }
 
     protected static ?string $recordTitleAttribute = 'name';
 
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            Select::make('season_id')->label('Season')->relationship('season', 'name')->searchable()->preload()->required(),
-            TextInput::make('number')->label('Matchday number')->numeric()->required(),
-            TextInput::make('name')->label('Round name'),
-            DateTimePicker::make('starts_at')->label('Starts at')->required(),
-            DateTimePicker::make('ends_at')->label('Ends at')->required(),
+            Select::make('season_id')->label(__('admin.labels.season'))->relationship('season', 'name')->searchable()->preload()->required(),
+            TextInput::make('number')->label(__('admin.labels.matchday_number'))->numeric()->required(),
+            TextInput::make('name')->label(__('admin.labels.round_name')),
+            DateTimePicker::make('starts_at')->label(__('admin.labels.starts_at'))->required(),
+            DateTimePicker::make('ends_at')->label(__('admin.labels.ends_at'))->required(),
         ]);
     }
 
@@ -39,12 +55,12 @@ class MatchdayResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('season.realCompetition.name')->label('Competition')->searchable()->sortable(),
-                TextColumn::make('season.name')->label('Season')->searchable()->sortable(),
-                TextColumn::make('number')->label('Matchday number')->searchable()->sortable(),
-                TextColumn::make('name')->label('Round name')->searchable()->sortable(),
-                TextColumn::make('starts_at')->label('Starts At')->dateTime()->sortable(),
-                TextColumn::make('ends_at')->label('Ends At')->dateTime()->sortable(),
+                TextColumn::make('season.realCompetition.name')->label(__('admin.labels.competition'))->searchable()->sortable(),
+                TextColumn::make('season.name')->label(__('admin.labels.season'))->searchable()->sortable(),
+                TextColumn::make('number')->label(__('admin.labels.matchday_number'))->searchable()->sortable(),
+                TextColumn::make('name')->label(__('admin.labels.round_name'))->searchable()->sortable(),
+                TextColumn::make('starts_at')->label(__('admin.labels.starts_at'))->dateTime()->sortable(),
+                TextColumn::make('ends_at')->label(__('admin.labels.ends_at'))->dateTime()->sortable(),
             ])
             ->recordActions([EditAction::make()])
             ->toolbarActions([BulkActionGroup::make([DeleteBulkAction::make()])]);

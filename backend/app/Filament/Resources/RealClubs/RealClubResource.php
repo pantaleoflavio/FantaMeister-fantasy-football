@@ -19,9 +19,25 @@ class RealClubResource extends Resource
 {
     protected static ?string $model = RealClub::class;
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Real Data';
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin.navigation.groups.real_data');
+    }
 
-    protected static ?string $navigationLabel = 'Real Clubs';
+    public static function getNavigationLabel(): string
+    {
+        return __('admin.resources.real_clubs.plural');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('admin.resources.real_clubs.singular');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('admin.resources.real_clubs.plural');
+    }
 
     protected static ?string $recordTitleAttribute = 'name';
 
@@ -29,10 +45,10 @@ class RealClubResource extends Resource
     {
         return $schema->components([
             TextInput::make('name')->label('Club Name')->required(),
-            TextInput::make('short_name')->label('Short Name')->required(),
-            TextInput::make('slug')->label('Slug')->required()->unique(ignoreRecord: true)->dehydrateStateUsing(fn (string $state): string => str($state)->slug()->lower()->toString()),
-            TextInput::make('country_code')->label('Country')->length(2)->alpha()->dehydrateStateUsing(fn (?string $state): ?string => $state ? strtoupper($state) : null),
-            TextInput::make('logo_path')->label('Logo path'),
+            TextInput::make('short_name')->label(__('admin.labels.short_name'))->required(),
+            TextInput::make('slug')->label(__('admin.labels.slug'))->required()->unique(ignoreRecord: true)->dehydrateStateUsing(fn (string $state): string => str($state)->slug()->lower()->toString()),
+            TextInput::make('country_code')->label(__('admin.labels.country_code'))->length(2)->alpha()->dehydrateStateUsing(fn (?string $state): ?string => $state ? strtoupper($state) : null),
+            TextInput::make('logo_path')->label(__('admin.labels.logo_path')),
         ]);
     }
 
@@ -40,10 +56,10 @@ class RealClubResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->label('Club name')->searchable()->sortable(),
-                TextColumn::make('short_name')->label('Short Name')->searchable()->sortable(),
-                TextColumn::make('slug')->label('Slug')->searchable()->sortable(),
-                TextColumn::make('country_code')->label('Country Code')->searchable()->sortable(),
+                TextColumn::make('name')->label(__('admin.labels.name'))->searchable()->sortable(),
+                TextColumn::make('short_name')->label(__('admin.labels.short_name'))->searchable()->sortable(),
+                TextColumn::make('slug')->label(__('admin.labels.slug'))->searchable()->sortable(),
+                TextColumn::make('country_code')->label(__('admin.labels.country_code'))->searchable()->sortable(),
             ])
             ->recordActions([EditAction::make()])
             ->toolbarActions([BulkActionGroup::make([DeleteBulkAction::make()])]);

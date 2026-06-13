@@ -11,12 +11,7 @@ enum CompetitionType: string
 
     public function label(): string
     {
-        return match ($this) {
-            self::DomesticLeague => 'Domestic league',
-            self::DomesticCup => 'Domestic cup',
-            self::InternationalClub => 'International club',
-            self::Custom => 'Custom',
-        };
+        return __("admin.enums.competition_type.{$this->value}");
     }
 
     public static function options(): array

@@ -17,7 +17,7 @@ class UsersTable
                 TextColumn::make('name')
                     ->searchable(),
                 TextColumn::make('email')
-                    ->label('Email address')
+                    ->label(__('admin.labels.email_address'))
                     ->searchable(),
                 TextColumn::make('email_verified_at')
                     ->dateTime()

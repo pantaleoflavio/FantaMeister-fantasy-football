@@ -17,18 +17,34 @@ class FormationModuleRequirementResource extends Resource
 {
     protected static ?string $model = FormationModuleRequirement::class;
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Lookups';
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin.navigation.groups.lookups');
+    }
 
-    protected static ?string $navigationLabel = 'Formation Module Requirements';
+    public static function getNavigationLabel(): string
+    {
+        return __('admin.resources.formation_module_requirements.plural');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('admin.resources.formation_module_requirements.singular');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('admin.resources.formation_module_requirements.plural');
+    }
 
     protected static ?string $recordTitleAttribute = 'id';
 
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            Select::make('formation_module_id')->label('Formation module')->relationship('formationModule', 'label')->searchable()->preload()->required(),
-            Select::make('player_role_id')->label('Player role')->relationship('playerRole', 'label')->searchable()->preload()->required(),
-            TextInput::make('required_count')->label('Required count')->numeric(),
+            Select::make('formation_module_id')->label(__('admin.labels.formation_module'))->relationship('formationModule', 'label')->searchable()->preload()->required(),
+            Select::make('player_role_id')->label(__('admin.labels.player_role'))->relationship('playerRole', 'label')->searchable()->preload()->required(),
+            TextInput::make('required_count')->label(__('admin.labels.required_count'))->numeric(),
         ]);
     }
 
@@ -36,9 +52,9 @@ class FormationModuleRequirementResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('formationModule.label')->label('Label')->searchable()->sortable(),
-                TextColumn::make('playerRole.label')->label('Label')->searchable()->sortable(),
-                TextColumn::make('required_count')->label('Required Count')->searchable()->sortable(),
+                TextColumn::make('formationModule.label')->label(__('admin.labels.label'))->searchable()->sortable(),
+                TextColumn::make('playerRole.label')->label(__('admin.labels.label'))->searchable()->sortable(),
+                TextColumn::make('required_count')->label(__('admin.labels.required_count'))->searchable()->sortable(),
             ])
             ->recordActions([EditAction::make()])
             ->toolbarActions([BulkActionGroup::make([DeleteBulkAction::make()])]);

@@ -21,9 +21,25 @@ class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static string|\UnitEnum|null $navigationGroup = 'System';
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin.navigation.groups.system');
+    }
 
-    protected static ?string $navigationLabel = 'Users';
+    public static function getNavigationLabel(): string
+    {
+        return __('admin.resources.users.plural');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('admin.resources.users.singular');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('admin.resources.users.plural');
+    }
 
     protected static ?string $recordTitleAttribute = 'name';
 
@@ -37,10 +53,10 @@ class UserResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            TextInput::make('name')->label('Name')->required(),
-            TextInput::make('email')->label('Email')->email()->required()->unique(ignoreRecord: true),
-            Select::make('roles')->label('Global roles')->relationship('roles', 'label')->multiple()->preload()->searchable()->required(),
-            TextInput::make('password')->label('Password')->password()->dehydrated(fn (?string $state): bool => filled($state))->required(fn (string $operation): bool => $operation === 'create'),
+            TextInput::make('name')->label(__('admin.labels.name'))->required(),
+            TextInput::make('email')->label(__('admin.labels.email'))->email()->required()->unique(ignoreRecord: true),
+            Select::make('roles')->label(__('admin.labels.global_roles'))->relationship('roles', 'label')->multiple()->preload()->searchable()->required(),
+            TextInput::make('password')->label(__('admin.labels.password'))->password()->dehydrated(fn (?string $state): bool => filled($state))->required(fn (string $operation): bool => $operation === 'create'),
         ]);
     }
 
@@ -48,8 +64,8 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->label('Name')->searchable()->sortable(),
-                TextColumn::make('email')->label('Email')->searchable()->sortable(),
+                TextColumn::make('name')->label(__('admin.labels.name'))->searchable()->sortable(),
+                TextColumn::make('email')->label(__('admin.labels.email'))->searchable()->sortable(),
             ])
             ->recordActions([EditAction::make()])
             ->toolbarActions([BulkActionGroup::make([DeleteBulkAction::make()])]);

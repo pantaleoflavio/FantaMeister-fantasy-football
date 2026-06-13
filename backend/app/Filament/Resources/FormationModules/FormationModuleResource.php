@@ -18,18 +18,34 @@ class FormationModuleResource extends Resource
 {
     protected static ?string $model = FormationModule::class;
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Lookups';
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin.navigation.groups.lookups');
+    }
 
-    protected static ?string $navigationLabel = 'Formation Modules';
+    public static function getNavigationLabel(): string
+    {
+        return __('admin.resources.formation_modules.plural');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('admin.resources.formation_modules.singular');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('admin.resources.formation_modules.plural');
+    }
 
     protected static ?string $recordTitleAttribute = 'label';
 
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            TextInput::make('name')->label('Name')->required()->unique(ignoreRecord: true),
-            TextInput::make('label')->label('Label')->required(),
-            Toggle::make('is_active')->label('Active')->default(true),
+            TextInput::make('name')->label(__('admin.labels.name'))->required()->unique(ignoreRecord: true),
+            TextInput::make('label')->label(__('admin.labels.label'))->required(),
+            Toggle::make('is_active')->label(__('admin.labels.active'))->default(true),
         ]);
     }
 
@@ -37,8 +53,8 @@ class FormationModuleResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->label('Name')->searchable()->sortable(),
-                TextColumn::make('label')->label('Label')->searchable()->sortable(),
+                TextColumn::make('name')->label(__('admin.labels.name'))->searchable()->sortable(),
+                TextColumn::make('label')->label(__('admin.labels.label'))->searchable()->sortable(),
                 IconColumn::make('is_active')->boolean(),
             ])
             ->recordActions([EditAction::make()])

@@ -22,9 +22,25 @@ class SeasonClubResource extends Resource
 {
     protected static ?string $model = SeasonClub::class;
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Real Data';
+public static function getNavigationGroup(): ?string
+    {
+        return __('admin.navigation.groups.real_data');
+    }
 
-    protected static ?string $navigationLabel = 'Season Clubs';
+    public static function getNavigationLabel(): string
+    {
+        return __('admin.resources.season_clubs.plural');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('admin.resources.season_clubs.singular');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('admin.resources.season_clubs.plural');
+    }
 
     protected static ?string $recordTitleAttribute = 'display_name';
 

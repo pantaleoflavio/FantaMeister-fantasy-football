@@ -12,7 +12,7 @@ enum RealMatchStatus: string
 
     public function label(): string
     {
-        return str($this->value)->replace('_', ' ')->title()->toString();
+        return __("admin.enums.real_match_status.{$this->value}");
     }
 
     public static function options(): array

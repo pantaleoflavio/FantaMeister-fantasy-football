@@ -16,17 +16,33 @@ class LeagueRoleResource extends Resource
 {
     protected static ?string $model = LeagueRole::class;
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Lookups';
+public static function getNavigationGroup(): ?string
+    {
+        return __('admin.navigation.groups.lookups');
+    }
 
-    protected static ?string $navigationLabel = 'League Roles';
+    public static function getNavigationLabel(): string
+    {
+        return __('admin.resources.league_roles.plural');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('admin.resources.league_roles.singular');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('admin.resources.league_roles.plural');
+    }
 
     protected static ?string $recordTitleAttribute = 'label';
 
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            TextInput::make('key')->label('Key')->required()->unique(ignoreRecord: true),
-            TextInput::make('label')->label('Label')->required(),
+            TextInput::make('key')->label(__('admin.labels.key'))->required()->unique(ignoreRecord: true),
+            TextInput::make('label')->label(__('admin.labels.label'))->required(),
         ]);
     }
 
@@ -34,8 +50,8 @@ class LeagueRoleResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('key')->label('Key')->searchable()->sortable(),
-                TextColumn::make('label')->label('Label')->searchable()->sortable(),
+                TextColumn::make('key')->label(__('admin.labels.key'))->searchable()->sortable(),
+                TextColumn::make('label')->label(__('admin.labels.label'))->searchable()->sortable(),
             ])
             ->recordActions([EditAction::make()])
             ->toolbarActions([BulkActionGroup::make([DeleteBulkAction::make()])]);

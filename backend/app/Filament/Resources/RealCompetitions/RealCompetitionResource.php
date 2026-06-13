@@ -23,20 +23,37 @@ class RealCompetitionResource extends Resource
 {
     protected static ?string $model = RealCompetition::class;
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Competitions';
+public static function getNavigationGroup(): ?string
+    {
+        return __('admin.navigation.groups.competitions');
+    }
 
-    protected static ?string $navigationLabel = 'Real Competitions';
+    public static function getNavigationLabel(): string
+    {
+        return __('admin.resources.real_competitions.plural');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('admin.resources.real_competitions.singular');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('admin.resources.real_competitions.plural');
+    }
+
 
     protected static ?string $recordTitleAttribute = 'name';
 
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            TextInput::make('name')->label('Competition name')->required(),
-            TextInput::make('code')->label('Competition code')->required()->unique(ignoreRecord: true)->dehydrateStateUsing(fn (string $state): string => str($state)->slug('_')->lower()->toString()),
-            TextInput::make('country_code')->label('Country')->length(2)->alpha()->dehydrateStateUsing(fn (?string $state): ?string => $state ? strtoupper($state) : null),
-            Select::make('type')->label('Competition type')->options(CompetitionType::options())->required(),
-            Toggle::make('is_active')->label('Active')->default(true),
+            TextInput::make('name')->label(__('admin.labels.competition_name'))->required(),
+            TextInput::make('code')->label(__('admin.labels.competition_code'))->required()->unique(ignoreRecord: true)->dehydrateStateUsing(fn (string $state): string => str($state)->slug('_')->lower()->toString()),
+            TextInput::make('country_code')->label(__('admin.labels.country_code'))->length(2)->alpha()->dehydrateStateUsing(fn (?string $state): ?string => $state ? strtoupper($state) : null),
+            Select::make('type')->label(__('admin.labels.competition_type'))->options(CompetitionType::options())->required(),
+            Toggle::make('is_active')->label(__('admin.labels.active'))->default(true),
         ]);
     }
 
@@ -44,11 +61,11 @@ class RealCompetitionResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->label('Name')->searchable()->sortable(),
-                TextColumn::make('code')->label('Competition code')->searchable()->sortable(),
-                TextColumn::make('country_code')->label('Country Code')->searchable()->sortable(),
-                TextColumn::make('type')->label('Competition type')->formatStateUsing(fn (CompetitionType $state): string => $state->label())->searchable()->sortable(),
-                IconColumn::make('is_active')->boolean(),
+                TextColumn::make('name')->label(__('admin.labels.name'))->searchable()->sortable(),
+                TextColumn::make('code')->label(__('admin.labels.competition_code'))->searchable()->sortable(),
+                TextColumn::make('country_code')->label(__('admin.labels.country_code'))->searchable()->sortable(),
+                TextColumn::make('type')->label(__('admin.labels.competition_type'))->formatStateUsing(fn (CompetitionType $state): string => $state->label())->searchable()->sortable(),
+                IconColumn::make('is_active')->label(__('admin.labels.active'))->boolean(),
             ])
             ->recordActions([EditAction::make()])
             ->toolbarActions([BulkActionGroup::make([DeleteBulkAction::make()])]);
