@@ -12,7 +12,7 @@ class Matchday extends Model
     use HasFactory;
 
     protected $fillable = [
-        'season_id', 'number', 'name', 'starts_at', 'ends_at', 'status',
+        'season_id', 'number', 'name', 'starts_at', 'ends_at',
     ];
 
     protected $casts = [

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\CompetitionType;
 use App\Models\RealCompetition;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -18,7 +19,7 @@ class RealCompetitionFactory extends Factory
             'name' => ucwords($name),
             'code' => $this->faker->unique()->slug(2),
             'country_code' => $this->faker->optional()->countryCode(),
-            'type' => 'domestic',
+            'type' => CompetitionType::DomesticLeague,
             'is_active' => true,
         ];
     }

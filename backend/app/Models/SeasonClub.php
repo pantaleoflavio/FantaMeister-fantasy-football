@@ -12,7 +12,7 @@ class SeasonClub extends Model
     use HasFactory;
 
     protected $fillable = [
-        'season_id', 'real_club_id', 'display_name', 'external_id', 'is_active',
+        'season_id', 'real_club_id', 'display_name', 'external_provider', 'external_id', 'is_active',
     ];
 
     protected $casts = [
@@ -22,6 +22,11 @@ class SeasonClub extends Model
     public function season(): BelongsTo
     {
         return $this->belongsTo(Season::class);
+    }
+
+    public function playerSeasonRegistrations(): HasMany
+    {
+        return $this->hasMany(PlayerSeasonRegistration::class);
     }
 
     public function realClub(): BelongsTo

@@ -33,7 +33,8 @@ class SeasonClubResource extends Resource
         return $schema->components([
             Select::make('season_id')->label('Season')->relationship('season', 'name')->searchable()->preload()->required(),
             Select::make('real_club_id')->label('Real club')->relationship('realClub', 'name')->searchable()->preload()->required(),
-            TextInput::make('display_name')->label('Display name')->required(),
+            TextInput::make('display_name')->label('Display name'),
+            TextInput::make('external_provider')->label('External provider'),
             TextInput::make('external_id')->label('External ID'),
             Toggle::make('is_active')->label('Active')->default(true),
         ]);
@@ -43,8 +44,10 @@ class SeasonClubResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('season.name')->label('Name')->searchable()->sortable(),
-                TextColumn::make('realClub.name')->label('Name')->searchable()->sortable(),
+                TextColumn::make('season.realCompetition.name')->label('Competition')
+                    ->searchable()->sortable(),
+                TextColumn::make('season.name')->label('Season')->searchable()->sortable(),
+                TextColumn::make('realClub.name')->label('Real club')->searchable()->sortable(),
                 TextColumn::make('display_name')->label('Display Name')->searchable()->sortable(),
                 TextColumn::make('external_id')->label('External Id')->searchable()->sortable(),
                 IconColumn::make('is_active')->boolean(),

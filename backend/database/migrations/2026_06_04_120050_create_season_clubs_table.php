@@ -16,10 +16,12 @@ return new class extends Migration
             $table->foreignId('season_id')->constrained()->cascadeOnDelete();
             $table->foreignId('real_club_id')->constrained()->restrictOnDelete();
             $table->string('display_name')->nullable();
+            $table->string('external_provider')->nullable();
             $table->string('external_id')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->unique(['season_id', 'real_club_id']);
+            $table->unique(['external_provider', 'external_id']);
         });
     }
 

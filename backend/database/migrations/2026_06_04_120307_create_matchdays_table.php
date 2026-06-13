@@ -12,10 +12,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('season_id')->constrained()->cascadeOnDelete();
             $table->unsignedSmallInteger('number');
-            $table->string('name');
+            $table->string('name')->nullable();
             $table->timestamp('starts_at');
             $table->timestamp('ends_at');
-            $table->string('status')->default('scheduled');
             $table->timestamps();
             $table->unique(['season_id', 'number']);
         });

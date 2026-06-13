@@ -12,8 +12,16 @@ class PlayerSeasonRegistration extends Model
     use HasFactory;
 
     protected $fillable = [
-        'player_id', 'season_id', 'real_club_id', 'external_id', 'shirt_number', 'quotation',
-        'is_active', 'registered_at', 'released_at',
+        'player_id',
+        'season_club_id',
+        'player_role_id',
+        'external_provider',
+        'external_id',
+        'shirt_number',
+        'quotation',
+        'is_active',
+        'registered_at',
+        'released_at',
     ];
 
     protected $casts = [
@@ -28,14 +36,14 @@ class PlayerSeasonRegistration extends Model
         return $this->belongsTo(Player::class);
     }
 
-    public function season(): BelongsTo
+    public function seasonClub(): BelongsTo
     {
-        return $this->belongsTo(Season::class);
+        return $this->belongsTo(SeasonClub::class);
     }
 
-    public function realClub(): BelongsTo
+    public function playerRole(): BelongsTo
     {
-        return $this->belongsTo(RealClub::class);
+        return $this->belongsTo(PlayerRole::class);
     }
 
     public function playerScores(): HasMany

@@ -14,7 +14,7 @@ use Tests\TestCase;
 
 class ResourceSmokeTest extends TestCase
 {
-   use RefreshDatabase;
+    use RefreshDatabase;
 
     public function test_super_admin_can_open_key_resource_indexes(): void
     {

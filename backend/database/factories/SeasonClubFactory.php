@@ -20,6 +20,7 @@ class SeasonClubFactory extends Factory
             'season_id' => Season::factory(),
             'real_club_id' => RealClub::factory(),
             'display_name' => null,
+            'external_provider' => null,
             'external_id' => $this->faker->optional()->uuid(),
             'is_active' => true,
         ];

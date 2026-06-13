@@ -21,7 +21,6 @@ class MatchdayFactory extends Factory
             'name' => 'Matchday 1',
             'starts_at' => now(),
             'ends_at' => now()->addDay(),
-            'status' => 'scheduled',
         ];
     }
 }

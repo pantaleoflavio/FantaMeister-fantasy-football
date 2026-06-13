@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\Matchday;
 use App\Models\PlayerScore;
 use App\Models\PlayerSeasonRegistration;
+use App\Models\SeasonClub;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /** @extends Factory<PlayerScore> */
@@ -18,7 +19,7 @@ class PlayerScoreFactory extends Factory
 
         return [
             'player_season_registration_id' => PlayerSeasonRegistration::factory()->create([
-                'season_id' => $matchday->season_id,
+                'season_club_id' => SeasonClub::factory()->create(['season_id' => $matchday->season_id])->id,
             ])->id,
             'matchday_id' => $matchday->id,
             'base_rating' => 6.00,

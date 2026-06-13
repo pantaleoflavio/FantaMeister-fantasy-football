@@ -65,8 +65,8 @@ class MultiCompetitionDomainTest extends TestCase
 
         $this->assertCount(2, $player->playerSeasonRegistrations);
         $this->assertTrue($firstRegistration->player->is($player));
-        $this->assertNotNull($firstRegistration->season);
-        $this->assertNotNull($firstRegistration->realClub);
+        $this->assertNotNull($firstRegistration->seasonClub->season);
+        $this->assertNotNull($firstRegistration->seasonClub->realClub);
         $this->assertSame('25.50', $firstRegistration->quotation);
         $this->assertSame('42.75', $secondRegistration->quotation);
     }
@@ -74,8 +74,15 @@ class MultiCompetitionDomainTest extends TestCase
     public function test_real_match_references_home_and_away_season_clubs(): void
     {
         $matchday = Matchday::factory()->create();
-        $home = SeasonClub::factory()->create(['season_id' => $matchday->season_id]);
-        $away = SeasonClub::factory()->create(['season_id' => $matchday->season_id]);
+
+        $home = SeasonClub::factory()->create([
+            'season_id' => $matchday->season_id,
+        ]);
+
+        $away = SeasonClub::factory()->create([
+            'season_id' => $matchday->season_id,
+        ]);
+
         $match = RealMatch::factory()->create([
             'matchday_id' => $matchday->id,
             'home_season_club_id' => $home->id,
@@ -91,7 +98,7 @@ class MultiCompetitionDomainTest extends TestCase
     public function test_player_score_references_player_season_registration(): void
     {
         $matchday = Matchday::factory()->create();
-        $registration = PlayerSeasonRegistration::factory()->create(['season_id' => $matchday->season_id]);
+        $registration = PlayerSeasonRegistration::factory()->create(['season_club_id' => SeasonClub::factory()->create(['season_id' => $matchday->season_id])->id]);
         $score = PlayerScore::factory()->create([
             'matchday_id' => $matchday->id,
             'player_season_registration_id' => $registration->id,

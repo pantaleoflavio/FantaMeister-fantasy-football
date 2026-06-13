@@ -21,17 +21,17 @@ class RealClubResource extends Resource
 
     protected static string|\UnitEnum|null $navigationGroup = 'Real Data';
 
-    protected static ?string $navigationLabel = 'RealClubs';
+    protected static ?string $navigationLabel = 'Real Clubs';
 
     protected static ?string $recordTitleAttribute = 'name';
 
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            TextInput::make('name')->label('Name')->required(),
-            TextInput::make('short_name')->label('Short name')->required(),
-            TextInput::make('slug')->label('Slug')->required()->unique(ignoreRecord: true),
-            TextInput::make('country_code')->label('Country code'),
+            TextInput::make('name')->label('Club Name')->required(),
+            TextInput::make('short_name')->label('Short Name')->required(),
+            TextInput::make('slug')->label('Slug')->required()->unique(ignoreRecord: true)->dehydrateStateUsing(fn (string $state): string => str($state)->slug()->lower()->toString()),
+            TextInput::make('country_code')->label('Country')->length(2)->alpha()->dehydrateStateUsing(fn (?string $state): ?string => $state ? strtoupper($state) : null),
             TextInput::make('logo_path')->label('Logo path'),
         ]);
     }
@@ -40,7 +40,7 @@ class RealClubResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->label('Name')->searchable()->sortable(),
+                TextColumn::make('name')->label('Club name')->searchable()->sortable(),
                 TextColumn::make('short_name')->label('Short Name')->searchable()->sortable(),
                 TextColumn::make('slug')->label('Slug')->searchable()->sortable(),
                 TextColumn::make('country_code')->label('Country Code')->searchable()->sortable(),

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\RealMatches;
 
+use App\Enums\RealMatchStatus;
 use App\Filament\Resources\RealMatches\Pages\CreateRealMatch;
 use App\Filament\Resources\RealMatches\Pages\EditRealMatch;
 use App\Filament\Resources\RealMatches\Pages\ListRealMatches;
@@ -31,12 +32,12 @@ class RealMatchResource extends Resource
     {
         return $schema->components([
             Select::make('matchday_id')->label('Matchday')->relationship('matchday', 'name')->searchable()->preload()->required(),
-            Select::make('home_season_club_id')->label('Home season club')->relationship('homeSeasonClub', 'display_name')->searchable()->preload()->required(),
-            Select::make('away_season_club_id')->label('Away season club')->relationship('awaySeasonClub', 'display_name')->searchable()->preload()->required(),
-            DateTimePicker::make('kickoff_at')->label('Kickoff at')->required(),
+            Select::make('home_season_club_id')->label('Home club')->relationship('homeSeasonClub', 'realClub.name')->searchable()->preload()->required(),
+            Select::make('away_season_club_id')->label('Away club')->relationship('awaySeasonClub', 'realClub.name')->searchable()->preload()->required(),
+            DateTimePicker::make('kickoff_at')->label('Kick-off')->required(),
             TextInput::make('home_score')->label('Home score')->numeric(),
             TextInput::make('away_score')->label('Away score')->numeric(),
-            TextInput::make('status')->label('Status')->required(),
+            Select::make('status')->label('Match status')->options(RealMatchStatus::options())->required(),
         ]);
     }
 
@@ -44,13 +45,15 @@ class RealMatchResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('matchday.name')->label('Name')->searchable()->sortable(),
-                TextColumn::make('homeSeasonClub.display_name')->label('Display Name')->searchable()->sortable(),
-                TextColumn::make('awaySeasonClub.display_name')->label('Display Name')->searchable()->sortable(),
+                TextColumn::make('matchday.season.realCompetition.name')->label('Competition'),
+                TextColumn::make('matchday.season.name')->label('Season'),
+                TextColumn::make('matchday.name')->label('Matchday')->searchable()->sortable(),
+                TextColumn::make('homeSeasonClub.realClub.name')->label('Home club')->searchable()->sortable(),
+                TextColumn::make('awaySeasonClub.realClub.name')->label('Away club')->searchable()->sortable(),
                 TextColumn::make('kickoff_at')->label('Kickoff At')->dateTime()->sortable(),
                 TextColumn::make('home_score')->label('Home Score')->searchable()->sortable(),
                 TextColumn::make('away_score')->label('Away Score')->searchable()->sortable(),
-                TextColumn::make('status')->label('Status')->searchable()->sortable(),
+                TextColumn::make('status')->label('Match status')->searchable()->sortable(),
             ])
             ->recordActions([EditAction::make()])
             ->toolbarActions([BulkActionGroup::make([DeleteBulkAction::make()])]);

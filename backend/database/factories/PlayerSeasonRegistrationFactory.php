@@ -3,9 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Player;
+use App\Models\PlayerRole;
 use App\Models\PlayerSeasonRegistration;
-use App\Models\RealClub;
-use App\Models\Season;
 use App\Models\SeasonClub;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -18,8 +17,9 @@ class PlayerSeasonRegistrationFactory extends Factory
     {
         return [
             'player_id' => Player::factory(),
-            'season_id' => Season::factory(),
-            'real_club_id' => RealClub::factory(),
+            'season_club_id' => SeasonClub::factory(),
+            'player_role_id' => PlayerRole::query()->inRandomOrder()->value('id') ?? PlayerRole::query()->create(['key' => 'factory_role_'.fake()->unique()->word(), 'label' => 'Factory role'])->id,
+            'external_provider' => null,
             'external_id' => $this->faker->optional()->uuid(),
             'shirt_number' => $this->faker->optional()->numberBetween(1, 99),
             'quotation' => $this->faker->randomFloat(2, 1, 100),
@@ -27,15 +27,5 @@ class PlayerSeasonRegistrationFactory extends Factory
             'registered_at' => now(),
             'released_at' => null,
         ];
-    }
-
-    public function configure(): static
-    {
-        return $this->afterCreating(function (PlayerSeasonRegistration $registration) {
-            SeasonClub::query()->firstOrCreate([
-                'season_id' => $registration->season_id,
-                'real_club_id' => $registration->real_club_id,
-            ]);
-        });
     }
 }

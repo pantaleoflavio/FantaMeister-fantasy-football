@@ -36,11 +36,6 @@ class Season extends Model
         return $this->hasMany(Matchday::class);
     }
 
-    public function playerSeasonRegistrations(): HasMany
-    {
-        return $this->hasMany(PlayerSeasonRegistration::class);
-    }
-
     public function leagues(): HasMany
     {
         return $this->hasMany(League::class);

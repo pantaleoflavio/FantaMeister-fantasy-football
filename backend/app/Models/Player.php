@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Player extends Model
@@ -29,15 +28,5 @@ class Player extends Model
     public function playerSeasonRegistrations(): HasMany
     {
         return $this->hasMany(PlayerSeasonRegistration::class);
-    }
-
-    public function roles(): BelongsToMany
-    {
-        return $this->belongsToMany(PlayerRole::class)->withPivot('is_primary')->withTimestamps();
-    }
-
-    public function primaryRole(): BelongsToMany
-    {
-        return $this->roles()->wherePivot('is_primary', true);
     }
 }
