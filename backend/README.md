@@ -294,3 +294,11 @@ Milestone 3 does not include:
 * Filament resources
 * frontend domain pages
 * scoring calculation logic
+
+## Internal administration
+
+The internal Filament panel is available at `/admin`. Global platform roles control panel access: `super_admin` can manage all domain data, users, and global roles; `global_admin` can manage domain data but cannot manage users or global roles; `user` cannot access the panel. League-specific roles (`commissioner`, `co_commissioner`, and `participant`) remain separate and only apply within a league.
+
+Global platform roles are stored in `roles` and `role_user`. League-scoped roles are stored separately in `league_roles` and `league_user`; league roles never grant access to the global admin panel.
+
+Optional super-admin seeding uses `SUPER_ADMIN_NAME`, `SUPER_ADMIN_EMAIL`, and `SUPER_ADMIN_PASSWORD`. Set `SUPER_ADMIN_EMAIL` to enable it. Global-admin seeding continues to use the corresponding `GLOBAL_ADMIN_*` variables.

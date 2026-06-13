@@ -20,7 +20,7 @@ class RegisterUserService
             'password' => Hash::make($attributes['password']),
         ]);
 
-        $userRole = Role::firstOrCreate(['name' => 'user']);
+        $userRole = Role::query()->where('name', 'user')->firstOrFail();
         $user->roles()->syncWithoutDetaching([$userRole->id]);
 
         return [

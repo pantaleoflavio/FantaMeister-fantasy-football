@@ -278,3 +278,12 @@ If frontend build fails after dependency changes:
 docker compose exec frontend npm install
 docker compose exec frontend npm run build
 ```
+
+## Internal admin panel
+
+The Filament internal admin panel is served at `http://127.0.0.1:8000/admin` and uses the existing user accounts.
+
+- `super_admin` (level 100) manages all domain resources, users, and global roles.
+- `global_admin` (level 80) manages domain resources but cannot manage users or global roles.
+- `user` (level 10) is a normal platform user and cannot access the admin panel.
+- League roles are league-scoped records in `league_roles` / `league_user` and are intentionally separate from global platform roles in `roles` / `role_user`.

@@ -269,3 +269,6 @@ Check it:
 ```bash
 curl http://127.0.0.1:8080/api/v1/health
 ```
+## Internal administration
+
+The internal Filament panel is available at `/admin`. Global platform roles control panel access: `super_admin` can manage all domain data, users, and global roles; `global_admin` can manage domain data but cannot manage users or global roles; `user` cannot access the panel. League-specific roles (`commissioner`, `co_commissioner`, and `participant`) remain separate and only apply within a league.
