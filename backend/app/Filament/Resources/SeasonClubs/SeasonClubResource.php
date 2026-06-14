@@ -22,7 +22,7 @@ class SeasonClubResource extends Resource
 {
     protected static ?string $model = SeasonClub::class;
 
-public static function getNavigationGroup(): ?string
+    public static function getNavigationGroup(): ?string
     {
         return __('admin.navigation.groups.real_data');
     }
@@ -47,12 +47,12 @@ public static function getNavigationGroup(): ?string
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            Select::make('season_id')->label('Season')->relationship('season', 'name')->searchable()->preload()->required(),
-            Select::make('real_club_id')->label('Real club')->relationship('realClub', 'name')->searchable()->preload()->required(),
-            TextInput::make('display_name')->label('Display name'),
-            TextInput::make('external_provider')->label('External provider'),
-            TextInput::make('external_id')->label('External ID'),
-            Toggle::make('is_active')->label('Active')->default(true),
+            Select::make('season_id')->label(__('admin.labels.season'))->relationship('season', 'name')->searchable()->preload()->required(),
+            Select::make('real_club_id')->label(__('admin.labels.real_club'))->relationship('realClub', 'name')->searchable()->preload()->required(),
+            TextInput::make('display_name')->label(__('admin.labels.display_name')),
+            TextInput::make('external_provider')->label(__('admin.labels.external_provider')),
+            TextInput::make('external_id')->label(__('admin.labels.external_id')),
+            Toggle::make('is_active')->label(__('admin.labels.is_active'))->default(true),
         ]);
     }
 
@@ -60,8 +60,7 @@ public static function getNavigationGroup(): ?string
     {
         return $table
             ->columns([
-                TextColumn::make('season.realCompetition.name')->label('Competition')
-                    ->searchable()->sortable(),
+                TextColumn::make('season.realCompetition.name')->label(__('admin.labels.competition'))->searchable()->sortable(),
                 TextColumn::make('season.name')->label('Season')->searchable()->sortable(),
                 TextColumn::make('realClub.name')->label('Real club')->searchable()->sortable(),
                 TextColumn::make('display_name')->label('Display Name')->searchable()->sortable(),

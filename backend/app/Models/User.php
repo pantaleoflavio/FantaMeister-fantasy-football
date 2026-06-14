@@ -51,8 +51,13 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasGlobalRole('global_admin');
     }
 
+    public function canAccessAdminPanel(): bool
+    {
+        return $this->isSuperAdmin() || $this->isGlobalAdmin();
+    }
+
     public function canAccessPanel(Panel $panel): bool
     {
-        return $panel->getId() === 'admin' && ($this->isSuperAdmin() || $this->isGlobalAdmin());
+         return $panel->getId() === 'admin' && $this->canAccessAdminPanel();
     }
 }

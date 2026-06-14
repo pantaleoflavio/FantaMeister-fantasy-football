@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'locale_switcher' => [
+        'label' => 'Lingua',
+        'locales' => ['en' => 'Inglese', 'de' => 'Tedesco', 'it' => 'Italiano'],
+    ],
     'panel' => ['title' => 'FantaMeister Admin'],
     'navigation' => ['groups' => [
         'system' => 'Sistema',
@@ -21,7 +25,7 @@ return [
         'player_scores' => ['singular' => 'Punteggio giocatore', 'plural' => 'Punteggio giocatore'],
         'player_season_registrations' => ['singular' => 'Registrazione giocatore', 'plural' => 'Registrazione giocatore'],
         'real_clubs' => ['singular' => 'Club reale', 'plural' => 'Club reale'],
-        'league_statuss' => ['singular' => 'Stato della lega', 'plural' => 'Stato della lega'],
+        'league_statuses' => ['singular' => 'Stato della lega', 'plural' => 'Stato della lega'],
         'player_roles' => ['singular' => 'Ruolo giocatore', 'plural' => 'Ruolo giocatore'],
         'formation_module_requirements' => ['singular' => 'Requisito del modulo di formazione', 'plural' => 'Requisito del modulo di formazione'],
         'players' => ['singular' => 'Giocatore', 'plural' => 'Giocatore'],
