@@ -1,0 +1,33 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+class TradeProposalItem extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'trade_proposal_id',
+        'fantasy_team_id',
+        'player_id',
+    ];
+
+    public function tradeProposal(): BelongsTo
+    {
+        return $this->belongsTo(TradeProposal::class);
+    }
+
+    public function fantasyTeam(): BelongsTo
+    {
+        return $this->belongsTo(FantasyTeam::class);
+    }
+
+    public function player(): BelongsTo
+    {
+        return $this->belongsTo(Player::class);
+    }
+}

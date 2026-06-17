@@ -10,15 +10,21 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class PlayerFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+    protected $model = Player::class;
+
     public function definition(): array
     {
+        $firstName = $this->faker->firstName();
+        $lastName = $this->faker->lastName();
+
         return [
-            //
+            'external_id' => $this->faker->uuid(),
+            'first_name' => $firstName,
+            'last_name' => $lastName,
+            'display_name' => "$firstName $lastName",
+            'slug' => $this->faker->unique()->slug(),
+            'birth_date' => $this->faker->date(),
+            'is_active' => true,
         ];
     }
 }

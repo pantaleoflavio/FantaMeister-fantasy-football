@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class LeagueType extends Model
 {
     protected $fillable = [
-        'key','label','description'
+        'key', 'label', 'description',
     ];
 }

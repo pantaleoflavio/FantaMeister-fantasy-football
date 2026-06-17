@@ -24,7 +24,8 @@ cd /mnt/c/xampp/htdocs/FantaMeister-fantasy-football
 
 ## Start the local stack
 
-```bash
+```bash#
+cp backend/.env.example backend/.env
 docker compose up -d --build
 ```
 
@@ -62,6 +63,8 @@ Enter the backend container:
 docker compose exec backend sh
 ```
 
+The backend development service sets Docker PostgreSQL credentials explicitly, including `DB_PASSWORD=password`, and runs `composer install` before FrankenPHP starts so a fresh backend vendor volume is populated automatically.
+
 Common backend commands:
 
 ```bash
@@ -78,6 +81,7 @@ From the host:
 docker compose exec backend php artisan test
 docker compose exec backend php artisan migrate:fresh --seed
 docker compose exec backend composer validate
+docker compose exec backend composer dump-autoload
 ```
 
 ## Frontend container workflow
@@ -108,6 +112,7 @@ Before committing changes, run:
 ```bash
 docker compose exec backend composer validate
 docker compose exec backend php artisan migrate:fresh --seed
+docker compose exec backend composer dump-autoload
 docker compose exec backend php artisan test
 docker compose exec frontend npm run build
 curl http://127.0.0.1:8000/api/v1/health
@@ -187,8 +192,12 @@ Never commit real `.env` files.
 Inside Docker:
 
 ```env
+DB_CONNECTION=pgsql
 DB_HOST=postgres
 DB_PORT=5432
+DB_DATABASE=fantasy_football
+DB_USERNAME=fantasy
+DB_PASSWORD=password
 ```
 
 From the host machine:
@@ -197,9 +206,15 @@ From the host machine:
 localhost:5433
 ```
 
+## Multi-competition domain model
+
+The application stores multiple real football competitions in one database. Seasons belong to real competitions, and fantasy leagues belong to seasons. Real clubs and players are global identities: `season_clubs` records club participation in a season, while `player_season_registrations` records a player's club, eligibility, quotation, and active status for a season.
+
+Real matches reference season clubs, and player scores reference player season registrations. This keeps competition- and season-specific data separate from global club and player identity.
+
 ## Migrations
 
-Use granular Laravel migrations.
+Use granular Laravel migrations. The domain schema follows this convention.
 
 Preferred rule:
 
@@ -263,3 +278,12 @@ If frontend build fails after dependency changes:
 docker compose exec frontend npm install
 docker compose exec frontend npm run build
 ```
+
+## Internal admin panel
+
+The Filament internal admin panel is served at `http://127.0.0.1:8000/admin` and uses the existing user accounts.
+
+- `super_admin` (level 100) manages all domain resources, users, and global roles.
+- `global_admin` (level 80) manages domain resources but cannot manage users or global roles.
+- `user` (level 10) is a normal platform user and cannot access the admin panel.
+- League roles are league-scoped records in `league_roles` / `league_user` and are intentionally separate from global platform roles in `roles` / `role_user`.

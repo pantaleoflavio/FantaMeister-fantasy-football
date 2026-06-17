@@ -26,7 +26,7 @@ class AuthTest extends TestCase
     public function test_registered_user_receives_default_role(): void
     {
         $role = Role::create(['name' => 'user']);
-        $this->postJson('/api/v1/auth/register', ['name'=>'A','email'=>'a@example.com','password'=>'password123','password_confirmation'=>'password123']);
+        $this->postJson('/api/v1/auth/register', ['name' => 'A', 'email' => 'a@example.com', 'password' => 'password123', 'password_confirmation' => 'password123']);
         $user = User::where('email', 'a@example.com')->firstOrFail();
         $this->assertTrue($user->roles->contains($role));
     }
@@ -49,7 +49,7 @@ class AuthTest extends TestCase
             'id' => $tokenId,
         ]);
 
-       $this->getJson('/api/v1/auth/me', [
+        $this->getJson('/api/v1/auth/me', [
             'Authorization' => "Bearer {$token}",
         ])
             ->assertOk()
@@ -77,6 +77,7 @@ class AuthTest extends TestCase
         $this->assertNotNull($admin);
         $this->assertTrue($admin->roles->contains('name', 'global_admin'));
     }
+
     public function test_forgot_and_reset_password_flow(): void
     {
         Notification::fake();

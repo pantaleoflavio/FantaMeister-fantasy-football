@@ -19,7 +19,7 @@ class GlobalAdminSeeder extends Seeder
             ]
         );
 
-        $role = Role::firstOrCreate(['name' => 'global_admin']);
+        $role = Role::query()->where('name', 'global_admin')->firstOrFail();
         $user->roles()->syncWithoutDetaching([$role->id]);
     }
 }

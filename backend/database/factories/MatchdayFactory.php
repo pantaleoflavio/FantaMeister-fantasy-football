@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Matchday;
+use App\Models\Season;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -10,15 +11,16 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class MatchdayFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+    protected $model = Matchday::class;
+
     public function definition(): array
     {
         return [
-            //
+            'season_id' => Season::factory(),
+            'number' => 1,
+            'name' => 'Matchday 1',
+            'starts_at' => now(),
+            'ends_at' => now()->addDay(),
         ];
     }
 }

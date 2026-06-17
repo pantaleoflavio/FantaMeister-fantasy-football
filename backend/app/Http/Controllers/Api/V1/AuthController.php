@@ -8,16 +8,16 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Http\Resources\Auth\UserResource;
+use App\Models\User;
 use App\Services\Auth\LoginUserService;
 use App\Services\Auth\LogoutUserService;
 use App\Services\Auth\RegisterUserService;
-use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -25,8 +25,7 @@ class AuthController extends Controller
         private readonly RegisterUserService $registerUserService,
         private readonly LoginUserService $loginUserService,
         private readonly LogoutUserService $logoutUserService,
-    ) {
-    }
+    ) {}
 
     public function register(RegisterRequest $request): JsonResponse
     {
@@ -72,6 +71,7 @@ class AuthController extends Controller
     public function forgotPassword(ForgotPasswordRequest $request): JsonResponse
     {
         Password::sendResetLink($request->validated());
+
         return response()->json(['message' => 'If the email exists, a reset link has been sent.']);
     }
 

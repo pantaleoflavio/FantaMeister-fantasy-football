@@ -16,4 +16,4 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 EXPOSE 8000
 
-CMD ["frankenphp", "php-server", "-r", "public/", "--listen", "0.0.0.0:8000"]
+CMD ["sh", "-c", "composer install && frankenphp php-server -r public/ --listen 0.0.0.0:8000"]

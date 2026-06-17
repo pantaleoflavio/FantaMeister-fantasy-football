@@ -1,291 +1,175 @@
-# Backend — Laravel API
+# FantaMeister Backend
 
-This folder contains the Laravel API backend for FantaMeister.
+Laravel API backend for **FantaMeister**, a multi-competition fantasy football platform.
 
-## Stack
+The backend is designed to support multiple real football competitions, seasons, clubs and players within a single deployment, while keeping global administration separate from league-specific permissions.
+
+## Tech stack
 
 * PHP 8.5
-* Laravel
+* Laravel 13
 * PostgreSQL
 * Laravel Sanctum
+* Filament 5
 * FrankenPHP
 * Docker Compose
+* PHPUnit
+* Laravel Pint
 
-## API prefix
+## Current features
 
-All API routes should be versioned under:
+* REST API versioned under `/api/v1`
+* User registration and authentication with Laravel Sanctum
+* Password reset flow
+* Global role hierarchy:
+
+  * `super_admin`
+  * `global_admin`
+  * `user`
+* League-scoped roles:
+
+  * `commissioner`
+  * `co_commissioner`
+  * `participant`
+* Multi-competition real-football domain
+* Filament administration panel
+* English, German and Italian admin translations
+* Session-based language switcher
+* Database factories, seeders and automated tests
+
+## Domain architecture
+
+The real-football domain separates global entities from season-specific participation.
 
 ```text
-/api/v1
+RealCompetition
+└── Season
+    ├── SeasonClub
+    │   └── RealClub
+    ├── PlayerSeasonRegistration
+    │   ├── Player
+    │   ├── PlayerRole
+    │   └── SeasonClub
+    └── Matchday
+        └── RealMatch
 ```
 
-Current implemented routes:
+Key design decisions:
+
+* real clubs and players are global identities
+* clubs participate in competitions through `season_clubs`
+* players are associated with clubs, roles and quotations through season registrations
+* matchdays belong to seasons
+* real matches reference the participating season clubs
+* fantasy league permissions remain separate from global platform roles
+
+## API
+
+Implemented endpoints:
 
 ```text
-GET       /api/v1/health
-POST      /api/v1/auth/register
-POST      /api/v1/auth/login
-POST      /api/v1/auth/logout
-GET       /api/v1/auth/me
-POST      /api/v1/auth/forgot-password
-POST      /api/v1/auth/reset-password
+GET  /api/v1/health
+
+POST /api/v1/auth/register
+POST /api/v1/auth/login
+POST /api/v1/auth/logout
+GET  /api/v1/auth/me
+
+POST /api/v1/auth/forgot-password
+POST /api/v1/auth/reset-password
 ```
 
-Check routes:
-
-```bash
-php artisan route:list --path=api/v1
-```
-
-From the host:
+List the registered routes:
 
 ```bash
 docker compose exec backend php artisan route:list --path=api/v1
 ```
 
-## Architecture conventions
+## Administration panel
 
-Use:
-
-* thin controllers
-* Form Requests for validation
-* API Resources for JSON output
-* Policies for authorization
-* service classes for business logic
-* Events, Listeners and Jobs only when they simplify the design
-
-Avoid:
-
-* business logic inside controllers
-* manually editing `composer.json` without updating `composer.lock`
-* hardcoded competition labels
-* large all-in-one migrations
-
-## Authentication
-
-Authentication uses Laravel Sanctum.
-
-Implemented auth scope:
-
-* register
-* login
-* logout
-* authenticated user endpoint
-* forgot password
-* reset password
-* global roles
-* default user role
-* global admin seeder
-
-Registered users must receive the default `user` role.
-
-The global admin user is created by `GlobalAdminSeeder` using environment-driven values:
-
-```env
-GLOBAL_ADMIN_NAME="Global Admin"
-GLOBAL_ADMIN_EMAIL=admin@example.com
-GLOBAL_ADMIN_PASSWORD=password
-```
-
-## Configuration
-
-Main competition configuration:
+The internal administration panel is available at:
 
 ```text
-config/competition.php
+http://127.0.0.1:8000/admin
 ```
 
-Deployment-specific values should come from environment variables.
+Access rules:
 
-Do not hardcode real competition names inside code.
+* `super_admin` can manage domain data, users and global roles
+* `global_admin` can manage domain data
+* regular users cannot access the panel
 
-## Docker development
+The panel supports English, German and Italian. The selected language is stored in the current browser session.
 
-Start the full stack from the repository root:
+## Local development
+
+From the repository root:
 
 ```bash
+cp backend/.env.example backend/.env
 docker compose up -d --build
-```
-
-Enter the backend container:
-
-```bash
-docker compose exec backend sh
-```
-
-Run backend tests:
-
-```bash
-php artisan test
 ```
 
 Run migrations and seeders:
 
 ```bash
-php artisan migrate:fresh --seed
+docker compose exec backend php artisan migrate:fresh --seed
 ```
 
-Clear Laravel caches:
-
-```bash
-php artisan optimize:clear
-```
-
-If the `vendor` directory is missing inside the backend container, run:
-
-```bash
-composer install
-```
-
-This can happen after:
-
-```bash
-docker compose down -v
-```
-
-because named Docker volumes are removed.
-
-## Database
-
-Inside Docker, Laravel connects to PostgreSQL using:
-
-```env
-DB_CONNECTION=pgsql
-DB_HOST=postgres
-DB_PORT=5432
-DB_DATABASE=fantasy_football
-DB_USERNAME=fantasy
-DB_PASSWORD=password
-```
-
-The host-side PostgreSQL port is mapped to:
-
-```text
-localhost:5433
-```
-
-Do not use `5433` inside the backend container.
-
-## Testing
-
-Run all backend tests:
-
-```bash
-php artisan test
-```
-
-From the host:
+Run the backend test suite:
 
 ```bash
 docker compose exec backend php artisan test
 ```
 
-Run migration/seed verification:
-
-```bash
-docker compose exec backend php artisan migrate:fresh --seed
-```
-
-Validate Composer metadata:
-
-```bash
-docker compose exec backend composer validate
-```
-
-## Code style
-
-Laravel Pint is used for PHP code style.
-
-Run Pint inside the backend container:
-
-```bash
-docker compose exec backend ./vendor/bin/pint
-```
-
-Check formatting without changing files:
+Check code formatting:
 
 ```bash
 docker compose exec backend ./vendor/bin/pint --test
 ```
 
-## Production-style backend
-
-The production-style backend Dockerfile is:
-
-```text
-backend/Dockerfile.prod
-```
-
-Build it from the repository root:
+Apply formatting:
 
 ```bash
-docker build -f backend/Dockerfile.prod -t fantameister-backend-prod ./backend
+docker compose exec backend ./vendor/bin/pint
 ```
 
-Run it locally:
+Check Composer metadata and security advisories:
 
 ```bash
-docker run --rm -p 8080:8000 \
-  --env-file backend/.env \
-  -e PORT=8000 \
-  -e DB_HOST=host.docker.internal \
-  fantameister-backend-prod
+docker compose exec backend composer validate
+docker compose exec backend composer audit --locked
+docker compose exec backend composer dump-autoload -o
 ```
 
-Check health:
+## Engineering conventions
 
-```bash
-curl http://127.0.0.1:8080/api/v1/health
-```
+The backend follows these conventions:
 
-## Migration conventions
+* thin controllers
+* Form Requests for validation
+* API Resources for response transformation
+* Policies for authorization
+* services or actions for non-trivial business logic
+* granular database migrations
+* explicit Eloquent relationships
+* database constraints for domain integrity
+* automated feature and domain tests
+* PSR-4 compliant namespaces and file structure
 
-Use granular migrations.
+## Project status
 
-Preferred rule:
+Completed foundations:
 
-* one migration per table
+* development infrastructure
+* authentication
+* global role hierarchy
+* multi-competition domain
+* Filament administration
+* backend internationalization
 
-Do not create one large migration for an entire milestone.
+Next development area:
 
-Bad migration names:
-
-```text
-create_milestone3_domain_tables
-create_all_domain_tables
-create_fantasy_schema
-create_core_tables
-```
-
-Good migration names:
-
-```text
-create_seasons_table
-create_real_clubs_table
-create_players_table
-create_leagues_table
-create_fantasy_teams_table
-create_formations_table
-```
-
-Migration order must respect foreign-key dependencies.
-
-Existing auth migrations should not be modified unless explicitly requested.
-
-## Domain model milestone
-
-The current domain model work should add:
-
-* core domain migrations
-* Eloquent models
-* relationships
-* lookup seeders
-* factories
-* relationship tests
-
-It should not add:
-
-* gameplay API routes
-* Filament resources
-* frontend domain pages
-* scoring calculation logic
+* fantasy league lifecycle
+* league memberships
+* commissioner and participant permissions

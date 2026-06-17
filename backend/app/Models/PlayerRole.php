@@ -2,17 +2,17 @@
 
 namespace App\Models;
 
-use App\Models\Player;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class PlayerRole extends Model
 {
     protected $fillable = [
-        'key','label','sort_order'
+        'key', 'label', 'sort_order',
     ];
-    public function players(): BelongsToMany
+
+    public function playerSeasonRegistrations(): HasMany
     {
-        return $this->belongsToMany(Player::class)->withPivot('is_primary')->withTimestamps();
+        return $this->hasMany(PlayerSeasonRegistration::class);
     }
 }

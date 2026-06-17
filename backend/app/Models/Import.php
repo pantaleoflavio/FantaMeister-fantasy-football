@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
-use App\Models\ImportRowError;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Import extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'type',
         'filename',
@@ -19,10 +22,15 @@ class Import extends Model
         'successful_rows',
         'failed_rows',
         'started_at',
-        'completed_at'
+        'completed_at',
     ];
 
-    public function importedBy()
+    protected $casts = [
+        'started_at' => 'datetime',
+        'completed_at' => 'datetime',
+    ];
+
+    public function importedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'imported_by_user_id');
     }

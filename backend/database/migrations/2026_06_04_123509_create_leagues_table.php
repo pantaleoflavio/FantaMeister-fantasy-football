@@ -1,0 +1,31 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('leagues', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('season_id')->constrained()->restrictOnDelete();
+            $table->foreignId('league_type_id')->constrained()->restrictOnDelete();
+            $table->foreignId('league_status_id')->constrained()->restrictOnDelete();
+            $table->foreignId('commissioner_user_id')->constrained('users')->restrictOnDelete();
+            $table->string('name');
+            $table->string('slug');
+            $table->text('description')->nullable();
+            $table->unsignedInteger('max_participants')->default(10);
+            $table->string('invite_code', 32)->nullable()->unique();
+            $table->timestamps();
+            $table->unique(['season_id', 'slug']);
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('leagues');
+    }
+};

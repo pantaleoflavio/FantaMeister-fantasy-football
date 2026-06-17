@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class LeagueStatus extends Model
 {
     protected $fillable = [
-        'key','label','sort_order'
+        'key', 'label', 'sort_order',
     ];
 }
