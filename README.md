@@ -195,18 +195,6 @@ Current API routes:
 
 ```text
 GET       /api/v1/health
-POST      /api/v1/auth/register
-POST      /api/v1/auth/login
-POST      /api/v1/auth/logout
-GET       /api/v1/auth/me
-POST      /api/v1/auth/forgot-password
-POST      /api/v1/auth/reset-password
-```
-
-Check API routes:
-
-```bash
-docker compose exec backend php artisan route:list --path=api/v1
 ```
 
 ## Local database
@@ -217,18 +205,8 @@ The PostgreSQL service is exposed to the host on:
 localhost:5433
 ```
 
-Inside Docker, the backend connects to PostgreSQL using:
-
-```text
-DB_CONNECTION=pgsql
-DB_HOST=postgres
-DB_PORT=5432
-DB_DATABASE=fantasy_football
-DB_USERNAME=fantasy
-DB_PASSWORD=password
-```
-
 Do not use `5433` inside the backend container. `5433` is only the host-side mapped port.
+Run instead localhost:8080 for the acces to Adminer Panel.
 
 ## Environment files
 
@@ -243,8 +221,6 @@ Frontend:
 ```bash
 cp frontend/.env.example frontend/.env
 ```
-
-Real `.env` files must not be committed.
 
 ## Production-style backend container
 
