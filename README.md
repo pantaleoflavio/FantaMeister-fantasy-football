@@ -1,63 +1,72 @@
-# FantaMeister Fantasy Football
+# FantaMeister
 
-FantaMeister is a fantasy football web application inspired by the Italian Fantacalcio model.
+FantaMeister is a full-stack fantasy football platform inspired by the Italian Fantacalcio model.
 
-The application uses one deployment to support multiple real football competitions. Seasons belong to real competitions, while real clubs and players are global identities that can participate in multiple competition seasons.
+The application is designed to support multiple real football competitions, seasons and custom fantasy leagues within a single deployment. It separates real-football data, global platform administration and league-specific gameplay permissions.
 
-## Current project status
+## Project status
 
-Completed:
+FantaMeister is under active development.
 
-* Laravel API backend
-* React + TypeScript + Vite frontend
-* Docker Compose local stack
-* PostgreSQL local database
-* FrankenPHP backend runtime
-* backend health endpoint
-* frontend health check
+Currently implemented:
+
+* Laravel REST API
+* React authentication interface
+* Docker-based local development environment
+* PostgreSQL database
 * Laravel Sanctum authentication
-* register, login, logout
-* authenticated user endpoint
-* forgot/reset password
-* global roles
-* default user role
-* global admin seeder
-* auth service layer
-* frontend auth pages
+* registration, login, logout and password reset
 * protected frontend routes
-* frontend i18n structure for auth/navigation
-* core fantasy football domain model (Milestone 3)
-* multi-competition real-football domain model (Milestone 3.5)
-* granular database migrations
-* Eloquent domain models and relationships
-* lookup seeders
-* high-priority domain factories
-* focused domain relationship and constraint tests
+* global role hierarchy
+* league-specific role model
+* multi-competition football domain
+* Filament administration panel
+* English, German and Italian administration interface
+* session-based language switcher
+* database factories and seeders
+* automated backend tests
 
-In progress:
+The next development phase focuses on fantasy league creation, membership and league-specific authorization.
 
-* Milestone 4 planning
+## Architecture
 
-## Repository structure
+FantaMeister uses a monorepo structure:
 
-* `backend/`: Laravel API backend
-* `frontend/`: React + TypeScript + Vite frontend
-* `docs/`: project documentation
-* `.github/workflows/`: CI workflows
-* `docker-compose.yml`: local development stack
+```text
+FantaMeister/
+├── backend/          Laravel API and Filament administration
+├── frontend/         React application
+├── docs/             Development documentation
+├── docker-compose.yml
+└── .github/workflows/
+```
 
-## Main stack
+The application follows an API-first architecture:
 
-Backend:
+```text
+React frontend
+      ↓
+Laravel REST API
+      ↓
+PostgreSQL
+```
+
+Filament provides a separate internal interface for managing competitions, seasons, clubs, players, fixtures, scores, users and roles.
+
+## Technology stack
+
+### Backend
 
 * PHP 8.5
-* Laravel
+* Laravel 13
 * PostgreSQL
 * Laravel Sanctum
+* Filament 5
 * FrankenPHP
-* Docker Compose
+* PHPUnit
+* Laravel Pint
 
-Frontend:
+### Frontend
 
 * React
 * TypeScript
@@ -67,184 +76,189 @@ Frontend:
 * React Hook Form
 * Zod
 * Tailwind CSS
-* lightweight i18n structure
 
-Planned infrastructure:
+### Infrastructure
 
-* Frontend: Cloudflare Pages
-* Backend: Render initially
-* Database: Supabase PostgreSQL
-* Storage: Cloudflare R2
-* CI/CD: GitHub Actions
+* Docker Compose
+* GitHub Actions
+* production-oriented Docker images
 
-## Local development with Docker Compose
+## Domain model
 
-Prepare the backend environment file, then start the full stack:
+The real-football domain separates global identities from competition-specific participation.
+
+```text
+RealCompetition
+└── Season
+    ├── SeasonClub
+    │   └── RealClub
+    ├── PlayerSeasonRegistration
+    │   ├── Player
+    │   ├── PlayerRole
+    │   └── SeasonClub
+    └── Matchday
+        └── RealMatch
+```
+
+Important design decisions:
+
+* clubs and players are stored as global identities
+* a club participates in a competition through a season registration
+* player club, role and quotation data are season-specific
+* matchdays belong to competition seasons
+* real matches reference clubs registered for the same season
+* global platform roles are separate from fantasy league roles
+
+## Authorization model
+
+Global platform roles:
+
+* `super_admin`
+* `global_admin`
+* `user`
+
+League-specific roles:
+
+* `commissioner`
+* `co_commissioner`
+* `participant`
+
+A user's role inside one fantasy league does not grant global administration privileges.
+
+## API
+
+All API endpoints are versioned under:
+
+```text
+/api/v1
+```
+
+Currently available:
+
+```text
+GET  /api/v1/health
+
+POST /api/v1/auth/register
+POST /api/v1/auth/login
+POST /api/v1/auth/logout
+GET  /api/v1/auth/me
+
+POST /api/v1/auth/forgot-password
+POST /api/v1/auth/reset-password
+```
+
+List all registered API routes:
+
+```bash
+docker compose exec backend php artisan route:list --path=api/v1
+```
+
+## Administration panel
+
+The internal Filament panel is available at:
+
+```text
+http://127.0.0.1:8000/admin
+```
+
+Access rules:
+
+* `super_admin` manages domain data, users and global roles
+* `global_admin` manages domain data
+* regular users cannot access the panel
+
+The panel supports English, German and Italian. The selected locale is stored in the browser session.
+
+## Local development
+
+Create the local environment files:
 
 ```bash
 cp backend/.env.example backend/.env
+cp frontend/.env.example frontend/.env
+```
+
+Start the application:
+
+```bash
 docker compose up -d --build
 ```
 
-The Docker backend service explicitly connects to PostgreSQL with `DB_PASSWORD=password`, matching the `POSTGRES_PASSWORD=password` value used by the PostgreSQL service. The backend development container runs `composer install` before starting FrankenPHP, so a fresh `backend_vendor` named volume is populated automatically.
+Available services:
 
-Check running services:
+```text
+Frontend:     http://localhost:5173
+Backend API:  http://127.0.0.1:8000
+Admin panel:  http://127.0.0.1:8000/admin
+Adminer:      http://localhost:8080
+PostgreSQL:   localhost:5433
+```
+
+Check running containers:
 
 ```bash
 docker compose ps
 ```
 
-Stop the stack:
+Stop the environment:
 
 ```bash
 docker compose down
 ```
 
-Stop the stack and remove local volumes:
+## Quality checks
+
+Run migrations and seeders:
 
 ```bash
-docker compose down -v
+docker compose exec backend php artisan migrate:fresh --seed
 ```
 
-Use `docker compose down -v` only when you intentionally want to reset local PostgreSQL data and named volumes.
-
-## Local URLs
-
-Backend:
-
-```text
-http://127.0.0.1:8000
-```
-
-Frontend:
-
-```text
-http://localhost:5173
-```
-
-Backend health endpoint:
-
-```bash
-curl http://127.0.0.1:8000/api/v1/health
-```
-
-## Backend commands
-
-Run backend commands inside the backend container:
-
-```bash
-docker compose exec backend sh
-```
-
-Inside the backend container:
-
-```bash
-php artisan test
-php artisan migrate:fresh --seed
-php artisan route:list --path=api/v1
-composer validate
-composer dump-autoload
-```
-
-From the host:
+Run backend tests:
 
 ```bash
 docker compose exec backend php artisan test
-docker compose exec backend php artisan migrate:fresh --seed
-docker compose exec backend php artisan route:list --path=api/v1
-docker compose exec backend composer validate
 ```
 
-## Frontend commands
-
-Run frontend commands inside the frontend container:
+Check PHP formatting:
 
 ```bash
-docker compose exec frontend sh
+docker compose exec backend ./vendor/bin/pint --test
 ```
 
-Inside the frontend container:
-
-```bash
-npm run dev
-npm run build
-```
-
-From the host:
+Build the frontend:
 
 ```bash
 docker compose exec frontend npm run build
 ```
 
-## Verification checklist
-
-Before committing backend/frontend changes, run:
+Validate dependencies and autoloading:
 
 ```bash
 docker compose exec backend composer validate
-docker compose exec backend composer dump-autoload
-docker compose exec backend php artisan migrate:fresh --seed
-docker compose exec backend php artisan test
-docker compose exec frontend npm run build
+docker compose exec backend composer audit --locked
+docker compose exec backend composer dump-autoload -o
+```
+
+Check the API:
+
+```bash
 curl http://127.0.0.1:8000/api/v1/health
 ```
 
-## Auth API
+## Engineering approach
 
-Current API routes:
+The backend follows these conventions:
 
-```text
-GET       /api/v1/health
-```
+* thin controllers
+* Form Requests for validation
+* API Resources for JSON responses
+* Policies for authorization
+* services and actions for business workflows
+* granular database migrations
+* explicit Eloquent relationships
+* database constraints for domain integrity
+* automated feature and domain tests
+* PSR-4 compliant namespaces
 
-## Local database
-
-The PostgreSQL service is exposed to the host on:
-
-```text
-localhost:5433
-```
-
-Do not use `5433` inside the backend container. `5433` is only the host-side mapped port.
-Run instead localhost:8080 for the acces to Adminer Panel.
-
-## Environment files
-
-Backend:
-
-```bash
-cp backend/.env.example backend/.env
-```
-
-Frontend:
-
-```bash
-cp frontend/.env.example frontend/.env
-```
-
-## Production-style backend container
-
-Build the production-style backend image:
-
-```bash
-docker build -f backend/Dockerfile.prod -t fantameister-backend-prod ./backend
-```
-
-Run it locally:
-
-```bash
-docker run --rm -p 8080:8000 \
-  --env-file backend/.env \
-  -e PORT=8000 \
-  -e DB_HOST=host.docker.internal \
-  fantameister-backend-prod
-```
-
-Check it:
-
-```bash
-curl http://127.0.0.1:8080/api/v1/health
-```
-## Internal administration
-
-The internal Filament panel is available at `/admin`. Global platform roles control panel access: `super_admin` can manage all domain data, users, and global roles; `global_admin` can manage domain data but cannot manage users or global roles; `user` cannot access the panel. League-specific roles (`commissioner`, `co_commissioner`, and `participant`) remain separate and only apply within a league.
+The frontend uses typed validation, API state management and protected routing to keep presentation and backend concerns separated.
