@@ -46,7 +46,15 @@ class League extends Model
 
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class)->withPivot('league_role_id', 'joined_at')->withTimestamps();
+        return $this->belongsToMany(User::class)
+            ->using(LeagueMembership::class)
+            ->withPivot('league_role_id', 'joined_at')
+            ->withTimestamps();
+    }
+
+    public function memberships(): HasMany
+    {
+        return $this->hasMany(LeagueMembership::class);
     }
 
     public function fantasyTeams(): HasMany

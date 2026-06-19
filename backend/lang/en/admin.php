@@ -33,7 +33,7 @@ return [
         'real_competitions' => ['singular' => 'Real Competition', 'plural' => 'Real Competitions'],
     ],
     'labels' => [
-        'active' => 'Active',
+        'is_active' => 'IsActive',
         'assists' => 'Assists',
         'away_club' => 'Away club',
         'away_score' => 'Away Score',

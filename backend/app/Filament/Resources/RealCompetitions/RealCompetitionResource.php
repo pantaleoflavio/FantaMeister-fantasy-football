@@ -23,7 +23,7 @@ class RealCompetitionResource extends Resource
 {
     protected static ?string $model = RealCompetition::class;
 
-public static function getNavigationGroup(): ?string
+    public static function getNavigationGroup(): ?string
     {
         return __('admin.navigation.groups.competitions');
     }
@@ -42,7 +42,6 @@ public static function getNavigationGroup(): ?string
     {
         return __('admin.resources.real_competitions.plural');
     }
-
 
     protected static ?string $recordTitleAttribute = 'name';
 

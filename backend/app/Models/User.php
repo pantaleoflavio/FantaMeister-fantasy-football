@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -24,6 +25,19 @@ class User extends Authenticatable implements FilamentUser
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function leagues(): BelongsToMany
+    {
+        return $this->belongsToMany(League::class)
+            ->using(LeagueMembership::class)
+            ->withPivot('league_role_id', 'joined_at')
+            ->withTimestamps();
+    }
+
+    public function leagueMemberships(): HasMany
+    {
+        return $this->hasMany(LeagueMembership::class);
     }
 
     public function roles(): BelongsToMany
@@ -58,6 +72,6 @@ class User extends Authenticatable implements FilamentUser
 
     public function canAccessPanel(Panel $panel): bool
     {
-         return $panel->getId() === 'admin' && $this->canAccessAdminPanel();
+        return $panel->getId() === 'admin' && $this->canAccessAdminPanel();
     }
 }

@@ -50,13 +50,13 @@ class AdminLocaleSwitcherTest extends TestCase
     public function test_unauthenticated_user_cannot_mutate_session(): void
     {
         $this->post(route('admin.locale.update', 'it'))
-            ->assertRedirect('/admin/login')
+            ->assertForbidden()
             ->assertSessionMissing('locale');
     }
 
     public function test_regular_user_cannot_mutate_admin_locale_session(): void
     {
-        /** @var \App\Models\User $user */
+        /** @var User $user */
         $user = User::factory()->create();
         $this->actingAs($user)
             ->post(route('admin.locale.update', 'it'))

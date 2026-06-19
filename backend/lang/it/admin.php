@@ -33,7 +33,7 @@ return [
         'real_competitions' => ['singular' => 'Competizione reale', 'plural' => 'Competizione reale'],
     ],
     'labels' => [
-        'active' => 'Attivo',
+        'is_active' => 'È Attivo',
         'assists' => 'Assist',
         'away_club' => 'Club ospite',
         'away_score' => 'Gol ospiti',
