@@ -27,7 +27,6 @@ class LeagueFactory extends Factory
             'slug' => $this->faker->unique()->slug(),
             'description' => $this->faker->sentence(),
             'max_participants' => 10,
-            'invite_code' => strtoupper($this->faker->bothify('????##')),
         ];
     }
 }

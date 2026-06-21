@@ -18,6 +18,11 @@ class LeaguePolicy
         return $this->hasRole($user, $league, 'commissioner');
     }
 
+    public function manageInvitations(User $user, League $league): bool
+    {
+        return $this->hasRole($user, $league, 'commissioner');
+    }
+
     public function delete(User $user, League $league): bool
     {
         return $this->hasRole($user, $league, 'commissioner');

@@ -21,7 +21,6 @@ class League extends Model
         'slug',
         'description',
         'max_participants',
-        'invite_code',
     ];
 
     public function season(): BelongsTo

@@ -14,7 +14,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
-class LeagueControllerTest extends TestCase
+class LeagueApiTest extends TestCase
 {
     use RefreshDatabase;
 

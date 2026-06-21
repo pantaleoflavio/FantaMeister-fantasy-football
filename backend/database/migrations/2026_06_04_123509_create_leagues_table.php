@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('slug');
             $table->text('description')->nullable();
             $table->unsignedInteger('max_participants')->default(10);
-            $table->string('invite_code', 32)->nullable()->unique();
             $table->timestamps();
             $table->unique(['season_id', 'slug']);
         });
