@@ -12,14 +12,11 @@ use App\Services\LeagueInvitation\CancelLeagueInvitationAction;
 use App\Services\LeagueInvitation\CreateLeagueInvitationAction;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Support\Facades\Gate;
 
 class LeagueInvitationController extends Controller
 {
     public function index(League $league): AnonymousResourceCollection
     {
-        Gate::authorize('manageInvitations', $league);
-
         return LeagueInvitationResource::collection(
             $league->invitations()->with('createdBy')->latest()->paginate()
         );
@@ -27,8 +24,6 @@ class LeagueInvitationController extends Controller
 
     public function store(StoreLeagueInvitationRequest $request, League $league, CreateLeagueInvitationAction $action): JsonResponse
     {
-        Gate::authorize('manageInvitations', $league);
-
         try {
             $invitation = $action->handle($league, $request->user(), $request->validated())->load('createdBy');
         } catch (LeagueInvitationCapacityExceeded $exception) {
@@ -43,9 +38,6 @@ class LeagueInvitationController extends Controller
 
     public function destroy(League $league, LeagueInvitation $invitation, CancelLeagueInvitationAction $action): JsonResponse
     {
-        abort_unless($invitation->league_id === $league->id, 404);
-        Gate::authorize('manageInvitations', $league);
-
         $action->handle($invitation);
 
         return response()->json(null, 204);

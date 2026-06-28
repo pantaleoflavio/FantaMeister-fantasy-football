@@ -21,11 +21,8 @@ class CreateLeagueInvitationAction
         private readonly InvitationCodeGenerator $codeGenerator
     ) {}
 
-    public function handle(
-        League $league,
-        User $creator,
-        array $data
-    ): LeagueInvitation {
+    public function handle(League $league, User $creator, array $data): LeagueInvitation
+    {
         for (
             $attempt = 0;
             $attempt < self::MAX_CODE_COLLISION_ATTEMPTS;

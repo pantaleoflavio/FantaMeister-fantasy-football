@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             LeagueTypeSeeder::class,
             LeagueRoleSeeder::class,
             FormationModuleSeeder::class,
+            DemoLeagueSeeder::class,
         ]);
     }
 }

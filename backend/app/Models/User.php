@@ -40,6 +40,11 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(LeagueMembership::class);
     }
 
+    public function fantasyTeams(): HasMany
+    {
+        return $this->hasMany(FantasyTeam::class);
+    }
+
     public function roles(): BelongsToMany
     {
         return $this->belongsToMany(Role::class);
